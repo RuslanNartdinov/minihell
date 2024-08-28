@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ruslannartdinov <ruslannartdinov@student.4 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:13:25 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/08/11 14:05:10 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:34:16 by ruslannartdinov  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,5 @@ int echo(char **args, int index)
 		index++;
 	}
 	print_echo(args, index, flag);
-	return 0;
-}
-
-int main()
-{
-	char *args1[] = {"echo", "Hello", "World", NULL};
-	echo(args1, 1); // Output: Hello World
-
-	char *args2[] = {"echo", "-n", "Hello", "World", NULL};
-	echo(args2, 1); // Output: Hello World
-
 	return 0;
 }
