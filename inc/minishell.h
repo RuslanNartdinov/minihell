@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:21:57 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/08/08 11:22:36 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:41:05 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,15 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/syslimits.h>
+
+
+
+typedef struct s_env
+{
+	char *name;
+	char *value;
+	struct s_env *next;
+} t_env;
+
 
 #endif
