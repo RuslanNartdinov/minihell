@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 16:30:08 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/23 17:05:06 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/08/20 16:30:08 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:32:25 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 void	handle_command(t_token *temp, char **command,
-	t_data *data, t_cmd_data *cmd_data)
+	t_shell *shell, t_cmd_data *cmd_data)
 {
 	if (cmd_data->i == 0 && temp->type != BCOMMAND)
 	{
-		command[cmd_data->i] = ft_get_cmd_path(temp->content, data->myenvstr);
+		command[cmd_data->i] = ft_get_cmd_path(temp->content, shell->myenvstr);
 		if (!command[cmd_data->i])
 			command[cmd_data->i] = ft_strdup(temp->content);
 	}
@@ -29,7 +29,7 @@ void	handle_command(t_token *temp, char **command,
 	cmd_data->i++;
 }
 
-void	read_in_out(t_token *temp, t_data_bundle *bundle)
+void	read_in_out(t_token *temp, t_shell_bundle *bundle)
 {
 	if (temp->type == FD_OUT || temp->type == APPEND)
 	{
@@ -38,8 +38,8 @@ void	read_in_out(t_token *temp, t_data_bundle *bundle)
 		bundle->cmd_data->fd_out = open_file(temp->next->content, temp->type);
 		if (bundle->cmd_data->fd_out == -1)
 		{
-			bundle->data->status = 1;
-			set_exitstatus(bundle->data);
+			bundle->shell->status = 1;
+			set_exitstatus(bundle->shell);
 		}
 		*(bundle->head) = temp;
 	}
@@ -50,14 +50,14 @@ void	read_in_out(t_token *temp, t_data_bundle *bundle)
 		bundle->cmd_data->fd_in = open_file(temp->next->content, temp->type);
 		if (bundle->cmd_data->fd_in == -1)
 		{
-			bundle->data->status = 1;
-			set_exitstatus(bundle->data);
+			bundle->shell->status = 1;
+			set_exitstatus(bundle->shell);
 		}
 		*(bundle->head) = temp;
 	}
 }
 
-int	handle_redirection(t_token *temp, char **command, t_data_bundle *bundle)
+int	handle_redirection(t_token *temp, char **command, t_shell_bundle *bundle)
 {
 	if (temp->next && temp->type != HEREDOC)
 	{
@@ -99,12 +99,12 @@ int	validate_fd(int cmd_fd, int i, char **command)
 	return (1);
 }
 
-void	handle_syntax_error(t_data_bundle *bundle,
+void	handle_syntax_error(t_shell_bundle *bundle,
 	char **command, t_token *temp)
 {
 	ft_putstr_fd
 		("minishell: syntax error near unexpected token `newline'\n", 2);
-	bundle->data->status = 258;
+	bundle->shell->status = 258;
 	if (bundle->cmd_data->i > 0)
 	{
 		command[bundle->cmd_data->i] = NULL;

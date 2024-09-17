@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   b_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 18:05:00 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/22 16:38:52 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/20 18:05:00 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:30:45 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../exec/executor.h"
 
+/// @brief it is the function to get the current working directory
+/// @param  
+/// @return 
 char	*get_pwd(void)
 {
 	char	*path;
@@ -24,6 +27,7 @@ char	*get_pwd(void)
 		return (path);
 }
 
+/// @brief it is the function to print the current working directory
 void	b_pwd(void)
 {
 	char	*path;
@@ -39,21 +43,22 @@ void	b_pwd(void)
 	}
 }
 
-void	process_echo_arg(char **com, t_data *data, int *flag, int *not_words)
+/// @brief it is the function to print the arguments
+void	process_echo_arg(char **com, t_shell *shell, int *flag, int *not_words)
 {
 	char	*temp;
 
-	temp = com[data->i];
+	temp = com[shell->i];
 	if (!ft_strncmp(temp, "-n", 2) && *not_words == 1)
 	{
-		data->j = 1;
-		while (temp[data->j] == 'n')
-			data->j++;
-		if (temp[data->j])
+		shell->j = 1;
+		while (temp[shell->j] == 'n')
+			shell->j++;
+		if (temp[shell->j])
 		{
 			*not_words = 0;
 			printf("%s", temp);
-			if (com[data->i + 1])
+			if (com[shell->i + 1])
 				printf(" ");
 		}
 		else
@@ -63,29 +68,31 @@ void	process_echo_arg(char **com, t_data *data, int *flag, int *not_words)
 	{
 		*not_words = 0;
 		printf("%s", temp);
-		if (com[data->i + 1])
+		if (com[shell->i + 1])
 			printf(" ");
 	}
 }
 
-void	b_echo(t_data *data, char **com)
+/// @brief it is the function to print the arguments
+void	b_echo(t_shell *shell, char **com)
 {
 	int	flag;
 	int	not_words;
 
 	flag = 0;
-	data->i = 1;
+	shell->i = 1;
 	not_words = 1;
-	while (com[data->i] != NULL)
+	while (com[shell->i] != NULL)
 	{
-		process_echo_arg(com, data, &flag, &not_words);
-		data->i++;
+		process_echo_arg(com, shell, &flag, &not_words);
+		shell->i++;
 	}
 	if (!flag)
 		printf("\n");
 }
 
-void	cd_home_path(char *home, char *cmd, t_data *data)
+/// @brief it is the function to change the directory to the home directory
+void	cd_home_path(char *home, char *cmd, t_shell *shell)
 {
 	char	*joined;
 
@@ -99,7 +106,7 @@ void	cd_home_path(char *home, char *cmd, t_data *data)
 		if (chdir(joined) == -1)
 		{
 			perror("cd");
-			data->status = 1;
+			shell->status = 1;
 		}
 		free(joined);
 	}

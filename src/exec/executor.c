@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 16:25:03 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/23 16:38:07 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/08/11 16:25:03 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:32:18 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 extern int	g_exit_code;
 
+/// @brief function is responsible for creating a pipe and storing
+///        its file descriptors in the params structure
 void	create_pipe(t_child_params *params)
 {
 	if (pipe(params->fd) == -1)
@@ -23,6 +25,10 @@ void	create_pipe(t_child_params *params)
 	}
 }
 
+/// @brief The SHLVL environment variable is used to track
+///        the number of nested shell invocations
+/// @param limiter 
+/// @returns the file descriptor 
 int	heredoc(char *limiter)
 {
 	char	*line;
@@ -51,6 +57,11 @@ int	heredoc(char *limiter)
 	return (fd[0]);
 }
 
+/// @brief it continues the execution of the next command
+/// @param command 
+/// @param head 
+/// @param curr 
+/// @returns the next token that is not a pipe
 static t_token	*next_cmd(t_command	*command, t_command	**head, t_token *curr)
 {
 	t_token		*temp;
@@ -63,31 +74,35 @@ static t_token	*next_cmd(t_command	*command, t_command	**head, t_token *curr)
 			temp = temp->next;
 	return (temp);
 }
-
-void	exec_line(t_data *data)
+/// @brief it executes the command and sets the exit status
+/// @param shell 
+void	exec_line(t_shell *shell)
 {
 	t_command	*command;
 	t_command	*head;
 	t_token		*temp;
 	char		**cmd;
 
-	temp = data->tokens;
+	temp = shell->tokens;
 	head = NULL;
 	cmd = NULL;
 	command = NULL;
 	while (temp)
 	{
 		cmd = cmd_size_init(temp);
-		command = set_command(cmd, temp, data, &temp);
+		command = set_command(cmd, temp, shell, &temp);
 		temp = next_cmd(command, &head, temp);
 	}
 	if (head && *cmd != NULL && command)
-		exec_cmd(head, data);
+		exec_cmd(head, shell);
 	g_exit_code = 0;
-	set_exitstatus(data);
+	set_exitstatus(shell);
 	free_commands(&head);
 }
 
+/// @brief it handles the pipe token
+/// @param temp 
+/// @returns the next token that is not a pipe
 t_token	*handle_pipe(t_token *temp)
 {
 	if (temp && temp->type == PIPE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 19:42:24 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/10 14:04:15 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/01/01 19:42:24 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:28:13 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

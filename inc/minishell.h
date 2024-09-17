@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 21:09:43 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/09/16 19:24:37 by mbabayan         ###   ########.fr       */
+/*   Created: 2024/08/20 21:09:43 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:31:05 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,15 @@
 
 # include "define.h"
 
+/// Aliases
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 
+/// @brief it is the structure of the environment variables
+/// @content it is the content of the environment variable
+/// @key it is the key of the environment variable
+/// @value it is the value of the environment variable
+/// @hide it is the flag to hide the environment variable
 struct s_env
 {
 	char			*content;
@@ -41,6 +47,9 @@ struct s_env
 	struct s_env	*next;
 };
 
+/// @brief it is the structure of the tokens
+/// @content it is the content of the token
+/// @type it is the type of the token
 struct s_token
 {
 	char			*content;
@@ -48,7 +57,24 @@ struct s_token
 	struct s_token	*next;
 };
 
-typedef struct s_data
+/// @brief it is the structure of the shell
+/// @input it is the input of the shell
+/// @checker it is the checker of the shell
+/// @temp it is the temp of the shell
+/// @temp2 it is the temp2 of the shell
+/// @tempkey it is the tempkey of the shell
+/// @tempvalue it is the tempvalue of the shell
+/// @j it is the j of the shell
+/// @typeflag it is the typeflag of the shell
+/// @sflag it is the sflag of the shell
+/// @envp it is the environment variables
+/// @myenvstr it is the environment variables in array
+/// @enviro it is the environment variables in linked list
+/// @tokens it is the tokens
+/// @currtoken it is the current token
+/// @i it is the i of the shell
+/// @status it is the status of the shell
+typedef struct s_shell
 {
 	char			*input;
 	char			*checker;
@@ -61,13 +87,19 @@ typedef struct s_data
 	int				sflag;
 	char			**envp;
 	char			**myenvstr;
-	t_env			*myenv;
+	t_env			*enviro;
 	t_token			*tokens;
 	t_token			*currtoken;
 	unsigned int	i;
 	int				status;
-}	t_data;
+}	t_shell;
 
+/// @brief it is the structure of the commands
+/// @command it is the command
+/// @fd_in it is the input file descriptor
+/// @fd_out it is the output file descriptor
+/// @fd_type it is the file descriptor type
+/// @is_bcommand it is the flag to check if it is a built-in command
 typedef struct s_command
 {
 	char				**command;
@@ -79,39 +111,39 @@ typedef struct s_command
 }	t_command;
 
 //initializing
-void	data_init(t_data *data);
-void	pre_init(t_data *data, char **envp);
-void	env_init(t_data *data);
-t_env	*ft_envlast(t_env *lst);
+void	data_init(t_shell *shell);
+void	pre_init(t_shell *shell, char **envp);
+void	env_init(t_shell *shell);
+t_env	*ft_envlast(t_env *env);
 t_env	*ft_envnew(char *word, int hide);
-int		ft_envsize(t_env *myenv);
-void	ft_envadd_back(t_env **lst, char *s, int hide);
-void	ft_envclear(t_env **lst);
-void	set_exitstatus(t_data *data);
-void	add_to_myenv(t_data *data, char *str, int hide, int sethide);
-void	incr_shlvl(t_data *data);
+int		ft_envsize(t_env *env);
+void	ft_envadd_back(t_env **env, char *s, int hide);
+void	ft_envclear(t_env **env);
+void	set_exitstatus(t_shell *shell);
+void	add_to_env(t_shell *shell, char *str, int hide, int sethide);
+void	incr_shlvl(t_shell *shell);
 void	free_split_from(char **split, int from);
-void	set_pwd(t_data *data);
-char	**env_to_array(t_env *myenv);
+void	set_pwd(t_shell *shell);
+char	**env_to_array(t_env *enviro);
 void		rl_replace_line(const char *s, int c);
 //parsing
-void	parser(t_data *data);
-void	append_checker(t_data *data);
-void	append_checker_char(t_data *data, int c);
-int		check_string(t_data *data);
-void	add_token_from_checker(t_data *data, int type, char **str);
-void	add_token_to_env(t_data *data);
-int		check_env_dupes(t_data *data, char *str, int sethide);
-char	*get_env_value(t_data *data, char *key);
-int		parse_double_quotes(t_data *data);
-int		parse_single_quotes(t_data *data);
-int		parse_in(t_data *data);
-int		parse_out(t_data *data);
-int		parse_space(t_data *data);
-int		parse_pipe(t_data *data);
-int		parse_dollar(t_data *data);
+void	parser(t_shell *shell);
+void	append_checker(t_shell *shell);
+void	append_checker_char(t_shell *shell, int c);
+int		check_string(t_shell *shell);
+void	add_token_from_checker(t_shell *shell, int type, char **str);
+void	add_token_to_env(t_shell *shell);
+int		check_env_dupes(t_shell *shell, char *str, int sethide);
+char	*get_env_value(t_shell *shell, char *key);
+int		parse_double_quotes(t_shell *shell);
+int		parse_single_quotes(t_shell *shell);
+int		parse_in(t_shell *shell);
+int		parse_out(t_shell *shell);
+int		parse_space(t_shell *shell);
+int		parse_pipe(t_shell *shell);
+int		parse_dollar(t_shell *shell);
 int		is_valid_key(char *str);
-void	set_type(t_data *data);
+void	set_type(t_shell *shell);
 
 //utils
 int		ft_isalnum(int c);
@@ -134,10 +166,10 @@ void	*ft_memset(void *str, int x, size_t n);
 t_token	*ft_lstnew(char *word);
 t_token	*ft_lstlast(t_token *lst);
 void	ft_lstadd_back(t_token **lst, t_token *new);
-void	ft_lstclear(t_data *lst);
+void	ft_lstclear(t_shell *lst);
 
 //exec
-void	exec_line(t_data *data);
+void	exec_line(t_shell *shell);
 void	free_args(char **args);
 char	*ft_get_cmd_path(char *cmd, char **envp);
 

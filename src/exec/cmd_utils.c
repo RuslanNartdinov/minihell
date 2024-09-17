@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 16:32:06 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/23 16:46:46 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/20 16:32:06 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:32:03 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/// @brief checks if the type is valid command type
+/// @param type 
+/// @return 
 int	is_valid_type(int type)
 {
 	if (type == COMMAND || type == FLAG
@@ -28,14 +31,20 @@ int	is_valid_type(int type)
 	return (0);
 }
 
+/// @brief sets the command for the shell to execute 
+/// @param command 
+/// @param temp 
+/// @param shell 
+/// @param head 
+/// @return 
 t_command	*set_command(char **command, t_token *temp,
-	t_data *data, t_token **head)
+	t_shell *shell, t_token **head)
 {
 	t_cmd_data		cmd_data;
-	t_data_bundle	bundle;
+	t_shell_bundle	bundle;
 
 	init_cmd_data(&cmd_data);
-	bundle.data = data;
+	bundle.shell = shell;
 	bundle.head = head;
 	bundle.cmd_data = &cmd_data;
 	while (temp && temp->type != PIPE)
@@ -53,10 +62,15 @@ t_command	*set_command(char **command, t_token *temp,
 			cmd_data.fd_out, cmd_data.fd_type));
 }
 
-int	handle_token_type(t_token *temp, char **command, t_data_bundle *bundle)
+/// @brief handles the token type for the command
+/// @param temp 
+/// @param command 
+/// @param bundle 
+/// @return 
+int	handle_token_type(t_token *temp, char **command, t_shell_bundle *bundle)
 {
 	if (is_valid_type(temp->type) == 1)
-		handle_command(temp, command, bundle->data, bundle->cmd_data);
+		handle_command(temp, command, bundle->shell, bundle->cmd_data);
 	else if (is_valid_type(temp->type) == 2)
 	{
 		if (!handle_redirection(temp, command, bundle))
@@ -65,6 +79,8 @@ int	handle_token_type(t_token *temp, char **command, t_data_bundle *bundle)
 	return (1);
 }
 
+/// @brief initializes the command data structure
+/// @param cmd_data 
 void	init_cmd_data(t_cmd_data *cmd_data)
 {
 	cmd_data->fd_in = NO_FD;
@@ -73,6 +89,9 @@ void	init_cmd_data(t_cmd_data *cmd_data)
 	cmd_data->i = 0;
 }
 
+/// @brief takes the token and adds it to the command
+/// @param temp 
+/// @returns double array of strings
 char	**cmd_size_init(t_token *temp)
 {
 	t_token	*count;

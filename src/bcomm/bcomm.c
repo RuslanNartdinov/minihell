@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   bcomm.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 17:23:47 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/23 18:12:19 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/08/21 17:23:47 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:31:49 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../exec/executor.h"
 
-void	b_unset_del(t_data *data, t_env *prev, t_env *curr)
+void	b_unset_del(t_shell *shell, t_env *prev, t_env *curr)
 {
-	if (!ft_strcmp(data->myenv->key, curr->key))
-		data->myenv = data->myenv->next;
+	if (!ft_strcmp(shell->enviro->key, curr->key))
+		shell->enviro = shell->enviro->next;
 	if (prev)
 		prev->next = curr->next;
 	free(curr->key);
@@ -23,7 +23,7 @@ void	b_unset_del(t_data *data, t_env *prev, t_env *curr)
 	free(curr);
 }
 
-void	b_unset(t_data *data, char **cmd)
+void	b_unset(t_shell *shell, char **cmd)
 {
 	t_env	*curr;
 	t_env	*prev;
@@ -33,7 +33,7 @@ void	b_unset(t_data *data, char **cmd)
 	i = 1;
 	while (cmd[i])
 	{
-		curr = data->myenv;
+		curr = shell->enviro;
 		prev = NULL;
 		while (curr)
 		{
@@ -42,7 +42,7 @@ void	b_unset(t_data *data, char **cmd)
 			{
 				temp = curr;
 				curr = curr->next;
-				b_unset_del(data, prev, temp);
+				b_unset_del(shell, prev, temp);
 				break ;
 			}
 			prev = curr;
@@ -52,23 +52,23 @@ void	b_unset(t_data *data, char **cmd)
 	}
 }
 
-void	b_cd_oldpwd(t_data *data, char **temp, char **curr_pwd)
+void	b_cd_oldpwd(t_shell *shell, char **temp, char **curr_pwd)
 {
 	*temp = get_pwd();
 	*curr_pwd = ft_strjoin("OLDPWD=", *temp);
-	add_to_myenv(data, ft_strdup(*curr_pwd), 0, 1);
+	add_to_env(shell, ft_strdup(*curr_pwd), 0, 1);
 	free(*temp);
 	free(*curr_pwd);
 }
 
-void	b_cd(t_data *data, char **cmd)
+void	b_cd(t_shell *shell, char **cmd)
 {
 	char	*home;
 	char	*curr_pwd;
 	char	*temp;
 
-	b_cd_oldpwd(data, &temp, &curr_pwd);
-	home = get_env_value(data, "HOME");
+	b_cd_oldpwd(shell, &temp, &curr_pwd);
+	home = get_env_value(shell, "HOME");
 	if (!cmd[1] || !ft_strncmp(cmd[1], "~", 2))
 	{
 		if (!home)
@@ -77,20 +77,20 @@ void	b_cd(t_data *data, char **cmd)
 			chdir(home);
 	}
 	else if (!ft_strncmp(cmd[1], "~", 1))
-		cd_home_path(home, cmd[1], data);
+		cd_home_path(home, cmd[1], shell);
 	else if (chdir(cmd[1]) == -1)
 	{
 		perror("cd");
-		data->sflag = 2;
+		shell->sflag = 2;
 	}
 	temp = get_pwd();
 	curr_pwd = ft_strjoin("PWD=", temp);
-	add_to_myenv(data, ft_strdup(curr_pwd), 0, 1);
+	add_to_env(shell, ft_strdup(curr_pwd), 0, 1);
 	free(curr_pwd);
 	free(temp);
 }
 
-void	b_declare(t_data *data, char **cmd)
+void	b_declare(t_shell *shell, char **cmd)
 {
 	int	i;
 	int	valid;
@@ -107,6 +107,6 @@ void	b_declare(t_data *data, char **cmd)
 	if (valid)
 	{
 		i--;
-		add_to_myenv(data, ft_strdup(cmd[i]), 1, 0);
+		add_to_env(shell, ft_strdup(cmd[i]), 1, 0);
 	}
 }

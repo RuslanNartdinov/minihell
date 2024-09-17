@@ -3,58 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 20:13:00 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 20:13:00 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/09/17 18:33:09 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:33:09 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	parser(t_data *data)
+/// @brief it parses the input string, it checks for quotes, spaces,
+///        pipes, redirections and dollar signs
+/// @param shell 
+void	parser(t_shell *shell)
 {
-	while (data->input[data->i])
+	while (shell->input[shell->i])
 	{
-		if (data->input[data->i] == '\"')
-			parse_double_quotes(data);
-		else if (data->input[data->i] == '\'')
-			parse_single_quotes(data);
+		if (shell->input[shell->i] == '\"')
+			parse_double_quotes(shell);
+		else if (shell->input[shell->i] == '\'')
+			parse_single_quotes(shell);
 		else
 		{
-			append_checker(data);
-			if (check_string(data))
-				add_token_from_checker(data, data->typeflag, &data->checker);
+			append_checker(shell);
+			if (check_string(shell))
+				add_token_from_checker(shell, shell->typeflag, &shell->checker);
 		}
-		data->i++;
+		shell->i++;
 	}
-	add_token_from_checker(data, data->typeflag, &data->checker);
-	if (data->checker)
-		free(data->checker);
+	add_token_from_checker(shell, shell->typeflag, &shell->checker);
+	if (shell->checker)
+		free(shell->checker);
 }
 
-void	append_checker(t_data *data)
+/// @brief it appends the current character to the checker
+void	append_checker(t_shell *shell)
 {
 	size_t	checker_len;
 	size_t	new_size;
 
-	checker_len = ft_strlen(data->checker);
+	checker_len = ft_strlen(shell->checker);
 	new_size = checker_len + 2;
-	data->temp = malloc(new_size);
-	if (!data->temp)
+	shell->temp = malloc(new_size);
+	if (!shell->temp)
 	{
 		perror("malloc");
 		exit(1);
 	}
-	ft_strcpy(data->temp, data->checker);
-	data->temp[checker_len] = data->input[data->i];
-	data->temp[checker_len + 1] = 0;
-	if (data->checker)
-		free(data->checker);
-	data->checker = data->temp;
+	ft_strcpy(shell->temp, shell->checker);
+	shell->temp[checker_len] = shell->input[shell->i];
+	shell->temp[checker_len + 1] = 0;
+	if (shell->checker)
+		free(shell->checker);
+	shell->checker = shell->temp;
 }
-
-void	add_token_from_checker(t_data *data, int type, char **str)
+/// @brief it adds the current token to the tokens list 
+/// @param shell 
+/// @param type 
+/// @param str 
+void	add_token_from_checker(t_shell *shell, int type, char **str)
 {
 	t_token	*curr;
 
@@ -62,48 +69,50 @@ void	add_token_from_checker(t_data *data, int type, char **str)
 	{
 		curr = ft_lstnew(*str);
 		curr->type = type;
-		ft_lstadd_back(&data->tokens, curr);
+		ft_lstadd_back(&shell->tokens, curr);
 		if (*str)
 			free(*str);
 		*str = ft_strdup("");
-		data->typeflag = WORD;
+		shell->typeflag = WORD;
 	}
 }
 
-void	append_checker_char(t_data *data, int c)
+/// @brief it appends the current character to the checker
+void	append_checker_char(t_shell *shell, int c)
 {
 	size_t	checker_len;
 	size_t	new_size;
 
-	checker_len = ft_strlen(data->checker);
+	checker_len = ft_strlen(shell->checker);
 	new_size = checker_len + 2;
-	data->temp = malloc(new_size);
-	if (!data->temp)
+	shell->temp = malloc(new_size);
+	if (!shell->temp)
 	{
 		perror("malloc");
 		exit(1);
 	}
-	ft_strcpy(data->temp, data->checker);
-	data->temp[checker_len] = c;
-	data->temp[checker_len + 1] = 0;
-	if (data->checker)
-		if (data->checker)
-			free(data->checker);
-	data->checker = data->temp;
+	ft_strcpy(shell->temp, shell->checker);
+	shell->temp[checker_len] = c;
+	shell->temp[checker_len + 1] = 0;
+	if (shell->checker)
+		if (shell->checker)
+			free(shell->checker);
+	shell->checker = shell->temp;
 }
 
-int	check_string(t_data *data)
+/// @brief it checks the current character and returns the type of the token
+int	check_string(t_shell *shell)
 {
-	if (data->input[data->i] == '<')
-		return (parse_in(data));
-	else if (data->input[data->i] == '>')
-		return (parse_out(data));
-	else if (data->input[data->i] == '|')
-		return (parse_pipe(data));
-	else if (data->input[data->i] == '$')
-		return (parse_dollar(data));
-	else if (data->input[data->i] == ' ' || data->input[data->i] == '\t'
-		|| ft_strlen(data->input) - 1 <= data->i)
-		return (parse_space(data));
+	if (shell->input[shell->i] == '<')
+		return (parse_in(shell));
+	else if (shell->input[shell->i] == '>')
+		return (parse_out(shell));
+	else if (shell->input[shell->i] == '|')
+		return (parse_pipe(shell));
+	else if (shell->input[shell->i] == '$')
+		return (parse_dollar(shell));
+	else if (shell->input[shell->i] == ' ' || shell->input[shell->i] == '\t'
+		|| ft_strlen(shell->input) - 1 <= shell->i)
+		return (parse_space(shell));
 	return (0);
 }

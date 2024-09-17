@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/26 19:46:25 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/07/26 19:46:49 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/07/26 19:46:25 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:34:06 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

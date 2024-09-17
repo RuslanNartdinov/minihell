@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 16:24:22 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/23 18:11:31 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/08/11 16:24:22 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:32:14 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include <errno.h>
 
-void	exit_free(t_command *cmd, t_data *data, int exit_status)
+void	exit_free(t_command *cmd, t_shell *shell, int exit_status)
 {
 	if (cmd)
 		free_commands(&cmd);
-	if (data)
+	if (shell)
 	{
-		if (data->myenvstr)
-			free_args(data->myenvstr);
-		ft_envclear(&data->myenv);
+		if (shell->myenvstr)
+			free_args(shell->myenvstr);
+		ft_envclear(&shell->enviro);
 	}
-	ft_lstclear(data);
+	ft_lstclear(shell);
 	close_std();
 	exit(exit_status);
 }
 
-void	exec_child(t_command *cmd, t_data *data, t_child_params *params)
+void	exec_child(t_command *cmd, t_shell *shell, t_child_params *params)
 {
 	int	exit_status;
 
 	exit_status = 1;
 	if (cmd && cmd->command[0] && !cmd->is_bcommand)
 	{
-		execve(cmd->command[0], cmd->command, data->myenvstr);
+		execve(cmd->command[0], cmd->command, shell->myenvstr);
 		if (errno == ENOENT)
 			exit_status = exec_printerr(cmd->command[0]);
 		else
@@ -46,7 +46,7 @@ void	exec_child(t_command *cmd, t_data *data, t_child_params *params)
 	}
 	else if (cmd->is_bcommand)
 	{
-		bcomm_exec(cmd, data, params);
+		bcomm_exec(cmd, shell, params);
 		exit_status = 0;
 	}
 	if (cmd->fd_out > -1)
@@ -54,10 +54,10 @@ void	exec_child(t_command *cmd, t_data *data, t_child_params *params)
 	if (cmd->fd_in > -1)
 		close(cmd->fd_in);
 	close(params->saved_stdout);
-	exit_free(cmd, data, exit_status);
+	exit_free(cmd, shell, exit_status);
 }
 
-void	start_child(t_command *cmd, t_data *data, t_child_params *params)
+void	start_child(t_command *cmd, t_shell *shell, t_child_params *params)
 {
 	if (params->is_first && cmd->fd_in > -1)
 	{
@@ -83,10 +83,10 @@ void	start_child(t_command *cmd, t_data *data, t_child_params *params)
 		close(params->fd[0]);
 	if (params->fd[1] > -1)
 		close(params->fd[1]);
-	exec_child(cmd, data, params);
+	exec_child(cmd, shell, params);
 }
 
-static void	bcomm_parent(t_command *cmd, t_data *data, t_child_params	*params)
+static void	bcomm_parent(t_command *cmd, t_shell *shell, t_child_params	*params)
 {
 	int	saved_stdout;
 
@@ -94,23 +94,23 @@ static void	bcomm_parent(t_command *cmd, t_data *data, t_child_params	*params)
 		saved_stdout = dup(STDOUT_FILENO);
 	if (cmd->fd_out > -1)
 		dup2(cmd->fd_out, STDOUT_FILENO);
-	bcomm_exec(cmd, data, params);
+	bcomm_exec(cmd, shell, params);
 	if (cmd->fd_out > -1)
 	{
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdout);
 	}
 	if (cmd->fd_out == -1)
-		data->status = 1;
-	else if (!data->sflag)
-		data->status = 0;
+		shell->status = 1;
+	else if (!shell->sflag)
+		shell->status = 0;
 }
 
-void	parent_pid(t_command *cmd, t_child_params *params, t_data *data)
+void	parent_pid(t_command *cmd, t_child_params *params, t_shell *shell)
 {
 	if (cmd->is_bcommand && !cmd->next && params->is_first)
 	{
-		bcomm_parent(cmd, data, params);
+		bcomm_parent(cmd, shell, params);
 		return ;
 	}
 	if (cmd->next)

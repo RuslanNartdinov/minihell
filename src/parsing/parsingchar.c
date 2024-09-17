@@ -3,102 +3,111 @@
 /*                                                        :::      ::::::::   */
 /*   parsingchar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 20:15:22 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 20:15:22 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/09/17 18:33:17 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:33:17 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	parse_double_quotes(t_data *data)
+/// @brief it loops through the input string and checks for double quotes,
+///        dollar signs and spaces
+/// @param shell 
+/// @return 
+int	parse_double_quotes(t_shell *shell)
 {
-	data->i++;
-	while (data->input[data->i] && data->input[data->i] != '\"')
+	shell->i++;
+	while (shell->input[shell->i] && shell->input[shell->i] != '\"')
 	{
-		append_checker(data);
-		if (data->input[data->i] == '$' && data->input[data->i + 1] != ' '
-			&& data->input[data->i + 1] != '\"' )
-			parse_dollar(data);
-		data->i++;
+		append_checker(shell);
+		if (shell->input[shell->i] == '$' && shell->input[shell->i + 1] != ' '
+			&& shell->input[shell->i + 1] != '\"' )
+			parse_dollar(shell);
+		shell->i++;
 	}
-	data->typeflag = DQUOTES;
+	shell->typeflag = DQUOTES;
 	return (1);
 }
 
-int	parse_single_quotes(t_data *data)
+/// @brief it loops through the input string and checks for single quotes
+int	parse_single_quotes(t_shell *shell)
 {
-	data->i++;
-	while (data->input[data->i] && data->input[data->i] != '\'')
+	shell->i++;
+	while (shell->input[shell->i] && shell->input[shell->i] != '\'')
 	{
-		append_checker(data);
-		data->i++;
+		append_checker(shell);
+		shell->i++;
 	}
-	data->typeflag = SQUOTES;
+	shell->typeflag = SQUOTES;
 	return (1);
 }
 
-int	parse_in(t_data *data)
+/// @brief it loops through the input string and checks for '<<' and '<'
+///         and adds the token to the tokens list
+int	parse_in(t_shell *shell)
 {
-	data->checker[ft_strlen(data->checker) - 1] = '\0';
-	if (data->i > 0 && ft_strlen(data->checker) != 0
-		&& data->input[data->i - 1] != ' ' && data->input[data->i - 1] != '\t')
-		add_token_from_checker(data, WORD, &data->checker);
-	if (data->input[data->i + 1] == '<')
+	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
+	if (shell->i > 0 && ft_strlen(shell->checker) != 0
+		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
+		add_token_from_checker(shell, WORD, &shell->checker);
+	if (shell->input[shell->i + 1] == '<')
 	{
-		data->i++;
-		if (data->checker)
-			free(data->checker);
-		data->checker = ft_strdup("<<");
-		add_token_from_checker(data, HEREDOC, &data->checker);
+		shell->i++;
+		if (shell->checker)
+			free(shell->checker);
+		shell->checker = ft_strdup("<<");
+		add_token_from_checker(shell, HEREDOC, &shell->checker);
 	}
 	else
 	{
-		if (data->checker)
-			free(data->checker);
-		data->checker = ft_strdup("<");
-		add_token_from_checker(data, FD_IN, &data->checker);
+		if (shell->checker)
+			free(shell->checker);
+		shell->checker = ft_strdup("<");
+		add_token_from_checker(shell, FD_IN, &shell->checker);
 	}
 	return (1);
 }
 
-int	parse_out(t_data *data)
+/// @brief it loops through the input string and checks for '>>' and '>'
+int	parse_out(t_shell *shell)
 {
-	data->checker[ft_strlen(data->checker) - 1] = '\0';
-	if (data->i > 0 && ft_strlen(data->checker) != 0
-		&& data->input[data->i - 1] != ' ' && data->input[data->i - 1] != '\t')
-		add_token_from_checker(data, WORD, &data->checker);
-	if (data->input[data->i + 1] == '>')
+	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
+	if (shell->i > 0 && ft_strlen(shell->checker) != 0
+		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
+		add_token_from_checker(shell, WORD, &shell->checker);
+	if (shell->input[shell->i + 1] == '>')
 	{
-		data->i++;
-		if (data->checker)
-			free(data->checker);
-		data->checker = ft_strdup(">>");
-		add_token_from_checker(data, APPEND, &data->checker);
+		shell->i++;
+		if (shell->checker)
+			free(shell->checker);
+		shell->checker = ft_strdup(">>");
+		add_token_from_checker(shell, APPEND, &shell->checker);
 	}
 	else
 	{
-		if (data->checker)
-			free(data->checker);
-		data->checker = ft_strdup(">");
-		add_token_from_checker(data, FD_OUT, &data->checker);
+		if (shell->checker)
+			free(shell->checker);
+		shell->checker = ft_strdup(">");
+		add_token_from_checker(shell, FD_OUT, &shell->checker);
 	}
 	return (1);
 }
 
-int	parse_space(t_data *data)
+/// @brief it loops through the input string and checks for spaces
+int	parse_space(t_shell *shell)
 {
-	if (ft_strlen(data->checker) == 1
-		&& (ft_strrchr(data->checker, ' ') || ft_strrchr(data->checker, '\t')))
+	if (ft_strlen(shell->checker) == 1
+		&& (ft_strrchr(shell->checker, ' ') || ft_strrchr(shell->checker, '\t')))
 	{
-		if (data->checker)
-			free(data->checker);
-		data->checker = ft_strdup("");
+		if (shell->checker)
+			free(shell->checker);
+		shell->checker = ft_strdup("");
 		return (0);
 	}
-	if (ft_strlen(data->input) - 1 > data->i || data->input[data->i] == ' '
-		|| data->input[data->i] == '\t')
-		data->checker[ft_strlen(data->checker) - 1] = '\0';
+	if (ft_strlen(shell->input) - 1 > shell->i || shell->input[shell->i] == ' '
+		|| shell->input[shell->i] == '\t')
+		shell->checker[ft_strlen(shell->checker) - 1] = '\0';
 	return (1);
 }

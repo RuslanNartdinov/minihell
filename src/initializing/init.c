@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 19:49:24 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 19:49:24 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/09/17 18:33:01 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:33:01 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/// @brief it frees the split array from the given index
 void	free_split_from(char **split, int from)
 {
 	while (split[from])
@@ -22,37 +23,39 @@ void	free_split_from(char **split, int from)
 	free(split);
 }
 
-void	pre_init(t_data *data, char **envp)
+/// @brief it initializes the environment variables
+void	pre_init(t_shell *shell, char **envp)
 {
-	data->envp = envp;
-	data->myenv = NULL;
-	data->myenv = NULL;
-	data->tokens = NULL;
-	data->sflag = 0;
-	data->i = 0;
-	env_init(data);
-	add_to_myenv(data, ft_strdup("?=0"), 1, 0);
-	incr_shlvl(data);
-	set_pwd(data);
+	shell->envp = envp;
+	shell->enviro = NULL;
+	shell->tokens = NULL;
+	shell->sflag = 0;
+	shell->i = 0;
+	env_init(shell);
+	add_to_env(shell, ft_strdup("?=0"), 1, 0);
+	incr_shlvl(shell);
+	set_pwd(shell);
 }
 
-void	data_init(t_data *data)
+/// @brief it initializes the shell, 
+///			it sets the checker, tokens, typeflag, status and myenvstr
+void	data_init(t_shell *shell)
 {
-	data->i = 0;
-	data->checker = ft_strdup("");
-	data->tokens = NULL;
-	data->typeflag = WORD;
-	data->status = 0;
-	data->myenvstr = env_to_array(data->myenv);
+	shell->i = 0;
+	shell->checker = ft_strdup("");
+	shell->tokens = NULL;
+	shell->typeflag = WORD;
+	shell->status = 0;
+	shell->myenvstr = env_to_array(shell->enviro);
 }
 
-int	ft_envfullsize(t_env *myenv)
+int	ft_envfullsize(t_env *enviro)
 {
 	t_env	*curr;
 	int		i;
 
 	i = 0;
-	curr = myenv;
+	curr = enviro;
 	while (curr)
 	{
 		if (curr->key && curr->value)
@@ -62,7 +65,7 @@ int	ft_envfullsize(t_env *myenv)
 	return (i);
 }
 
-char	**env_to_array(t_env *myenv)
+char	**env_to_array(t_env *enviro)
 {
 	int		size;
 	char	*temp;
@@ -71,11 +74,11 @@ char	**env_to_array(t_env *myenv)
 	int		i;
 
 	i = 0;
-	size = ft_envfullsize(myenv);
+	size = ft_envfullsize(enviro);
 	if (size == 0)
 		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
-	curr = myenv;
+	curr = enviro;
 	while (i < size)
 	{
 		if (curr->key && curr->value)

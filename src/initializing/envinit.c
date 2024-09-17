@@ -3,30 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   envinit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 19:51:40 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 19:51:40 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/09/17 18:32:35 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:32:35 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_env	*ft_envlast(t_env *lst)
+/// @brief it initializes the environment variables
+/// @param env 
+/// @return 
+t_env	*ft_envlast(t_env *env)
 {
-	if (!lst)
+	if (!env)
 		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
+	while (env->next != NULL)
+		env = env->next;
+	return (env);
 }
 
-void	ft_envclear(t_env **lst)
+void	ft_envclear(t_env **env)
 {
 	t_env	*curr;
 	t_env	*temp;
 
-	curr = *lst;
+	curr = *env;
 	while (curr)
 	{
 		temp = curr;
@@ -39,9 +42,13 @@ void	ft_envclear(t_env **lst)
 		if (temp)
 			free(temp);
 	}
-	*lst = NULL;
+	*env = NULL;
 }
 
+/// @brief it creates a new environment variable node
+/// @param word 
+/// @param hide 
+/// @return 
 t_env	*ft_envnew(char *word, int hide)
 {
 	t_env	*node;
@@ -64,26 +71,33 @@ t_env	*ft_envnew(char *word, int hide)
 	return (node);
 }
 
-void	ft_envadd_back(t_env **lst, char *s, int hide)
+/// @brief it adds a new environment variable to the end of the list
+/// @param env 
+/// @param s 
+/// @param hide 
+void	ft_envadd_back(t_env **env, char *string, int show)
 {
 	t_env	*temp;
 
-	if (*lst == NULL)
-		*lst = ft_envnew(s, hide);
+	if (*env == NULL)
+		*env = ft_envnew(string, show);
 	else
 	{
-		temp = ft_envlast(*lst);
-		temp->next = ft_envnew(s, hide);
+		temp = ft_envlast(*env);
+		temp->next = ft_envnew(string, show);
 	}
 }
 
-int	ft_envsize(t_env *myenv)
+/// @brief it returns the size of the environment variables
+/// @param env
+/// @return 
+int	ft_envsize(t_env *env)
 {
 	t_env	*curr;
 	int		i;
 
 	i = 0;
-	curr = myenv;
+	curr = env;
 	while (curr)
 	{
 		if (curr->key && curr->value && !curr->hide)

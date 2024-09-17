@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 21:09:48 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 21:43:56 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/20 21:09:48 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:31:16 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define DEFINE_H
 
 # define WORD 0
-# define COMMAND 11 //execve
+# define COMMAND 11 
 # define BOTH_FD 9
 # define FD_IN 12
 # define FD_OUT 13
@@ -27,7 +27,7 @@
 # define SQUOTES 20
 # define DOLLAR 21
 # define DECLARE 22
-# define BCOMMAND 23 //builtin
+# define BCOMMAND 23 
 # define FLAG 24
 # define NO_FD -10
 

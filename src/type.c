@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 20:29:53 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/23 16:42:35 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/20 20:29:53 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:33:49 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+/// @brief it checks if the token is a file descriptor
+/// @param temp 
 static void	check_fd_type(t_token *temp)
 {
 	if (temp->type)
@@ -28,7 +30,8 @@ static void	check_fd_type(t_token *temp)
 		temp->type = HEREDOC;
 }
 
-static int	check_if_command(t_data *data, t_token *curr)
+/// @brief it checks if the token is a command
+static int	check_if_command(t_shell *shell, t_token *curr)
 {
 	t_token	*temp;
 	int		command_flag;
@@ -36,7 +39,7 @@ static int	check_if_command(t_data *data, t_token *curr)
 	if (curr->type)
 		return (2);
 	command_flag = 0;
-	temp = data->tokens;
+	temp = shell->tokens;
 	while (temp && temp != curr)
 	{
 		if (temp->type == COMMAND || temp->type == BCOMMAND
@@ -54,6 +57,8 @@ static int	check_if_command(t_data *data, t_token *curr)
 	return (command_flag);
 }
 
+/// @brief checks for built-in commands
+/// @param temp 
 void	check_if_bcommand(t_token *temp)
 {
 	if (temp->type)
@@ -77,27 +82,32 @@ void	check_if_bcommand(t_token *temp)
 		temp->type = BCOMMAND;
 }
 
-static void	token_type(t_token *temp, t_data *data)
+/// @brief it sets the type of the tokens
+/// @param temp 
+/// @param shell 
+static void	token_type(t_token *temp, t_shell *shell)
 {
 	if (!ft_strncmp(temp->content, "|", 1) && ft_strlen(temp->content) == 1)
 		temp->type = PIPE;
-	else if (check_if_command(data, temp) == 1)
+	else if (check_if_command(shell, temp) == 1)
 		temp->type = FLAG;
-	else if (check_if_command(data, temp) == 0)
+	else if (check_if_command(shell, temp) == 0)
 		temp->type = COMMAND;
-	else if (check_if_command(data, temp) == 3)
+	else if (check_if_command(shell, temp) == 3)
 		temp->type = FILENAME;
-	else if (check_if_command(data, temp) == 4)
+	else if (check_if_command(shell, temp) == 4)
 		temp->type = LIMITER;
 }
 
-void	set_type(t_data *data)
+/// @brief it loops through the tokens and sets the filename
+/// @param shell 
+void	set_type(t_shell *shell)
 {
 	t_token	*temp;
 
-	if (!data || !data->tokens)
+	if (!shell || !shell->tokens)
 		return ;
-	temp = data->tokens;
+	temp = shell->tokens;
 	while (temp)
 	{
 		if (temp->type == DOLLAR)
@@ -106,9 +116,9 @@ void	set_type(t_data *data)
 		{
 			check_fd_type(temp);
 			check_if_bcommand(temp);
-			token_type(temp, data);
+			token_type(temp, shell);
 		}
 		temp = temp->next;
 	}
-	set_filename(data->tokens);
+	set_filename(shell->tokens);
 }

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_arg_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/11 16:27:49 by nalkhate          #+#    #+#             */
-/*   Updated: 2024/08/20 23:24:09 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/11 16:27:49 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:31:57 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/// @brief finds the last command in the list
 t_command	*cmd_lstlast(t_command *lst)
 {
 	if (!lst)
@@ -21,6 +22,8 @@ t_command	*cmd_lstlast(t_command *lst)
 	return (lst);
 }
 
+/// @brief frees the arguments of the command 
+/// @param lst 
 void	free_commands(t_command **lst)
 {
 	t_command	*temp;
@@ -39,6 +42,7 @@ void	free_commands(t_command **lst)
 	*lst = NULL;
 }
 
+/// @brief adds a command to the back of the list
 void	cmd_add_back(t_command **lst, t_command *new)
 {
 	t_command	*temp;
@@ -52,6 +56,7 @@ void	cmd_add_back(t_command **lst, t_command *new)
 	}
 }
 
+/// @brief checks if the command is a built-in command
 int	check_bcommand(char *comm)
 {
 	if (!comm)
@@ -77,6 +82,7 @@ int	check_bcommand(char *comm)
 		return (0);
 }
 
+/// @brief creates a new command for the list to execute
 t_command	*new_command(char **cmd, int fd_in, int fd_out, int fd_type)
 {
 	t_command	*new;

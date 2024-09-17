@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nalkhate <nalkhate@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 18:22:34 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/22 19:57:36 by nalkhate         ###   ########.fr       */
+/*   Created: 2024/08/21 18:22:34 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:31:33 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ int	is_numeric(char *str)
 	return (1);
 }
 
-void	b_exit_frees(t_data *data, t_command *cmd)
+void	b_exit_frees(t_shell *shell, t_command *cmd)
 {
 	free_commands(&cmd);
-	ft_envclear(&data->myenv);
-	free_split_from(data->myenvstr, 0);
-	ft_lstclear(data);
+	ft_envclear(&shell->enviro);
+	free_split_from(shell->myenvstr, 0);
+	ft_lstclear(shell);
 }
 
-void	b_exit(t_data *data, t_command *cmd, t_child_params	*params)
+void	b_exit(t_shell *shell, t_command *cmd, t_child_params	*params)
 {
 	int	arg;
 	int	flag;
@@ -81,8 +81,8 @@ void	b_exit(t_data *data, t_command *cmd, t_child_params	*params)
 	{
 		printf("exit\n");
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		data->status = 1;
-		set_exitstatus(data);
+		shell->status = 1;
+		set_exitstatus(shell);
 		return ;
 	}
 	if (cmd->command[1] && is_numeric(cmd->command[1]))
@@ -92,7 +92,7 @@ void	b_exit(t_data *data, t_command *cmd, t_child_params	*params)
 		exit_overflow(cmd->command[1], &flag);
 		arg = 255;
 	}
-	b_exit_frees(data, cmd);
+	b_exit_frees(shell, cmd);
 	if (flag)
 		printf("exit\n");
 	close(params->saved_stdout);

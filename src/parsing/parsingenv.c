@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsingenv.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 20:23:28 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 20:23:28 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/09/17 18:33:30 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:33:30 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/// @brief it checks if the key is valid
+///        by checking if it is alphanumeric or an underscore
+/// @param str 
+/// @return 
 int	is_valid_key(char *str)
 {
 	int	i;
@@ -31,13 +35,19 @@ int	is_valid_key(char *str)
 	return (1);
 }
 
-int	check_env_dupes(t_data *data, char *str, int sethide)
+/// @brief it checks for duplicate environment variables
+///        and updates the value if found else adds a new one
+/// @param shell
+/// @param str 
+/// @param sethide 
+/// @return 
+int	check_env_dupes(t_shell *data, char *str, int sethide)
 {
 	int		flag;
 	char	**split;
 	t_env	*curr;
 
-	curr = data->myenv;
+	curr = data->enviro;
 	flag = 1;
 	split = ft_split(str, '=');
 	data->temp = split[0];
@@ -59,20 +69,26 @@ int	check_env_dupes(t_data *data, char *str, int sethide)
 	return (flag);
 }
 
-void	add_token_to_env(t_data *data)
+/// @brief it adds a token to the environment variables
+/// @param data 
+void	add_token_to_env(t_shell *data)
 {
 	if (check_env_dupes(data, data->checker, 0))
-		ft_envadd_back(&data->myenv, data->checker, 1);
+		ft_envadd_back(&data->enviro, data->checker, 1);
 	if (data->checker)
 		free(data->checker);
 	data->checker = ft_strdup("");
 }
 
-char	*get_env_value(t_data *data, char *key)
+/// @brief it finds the value of the environment variable key
+/// @param data 
+/// @param key 
+/// @return 
+char	*get_env_value(t_shell *data, char *key)
 {
 	t_env	*curr;
 
-	curr = data->myenv;
+	curr = data->enviro;
 	if (!key)
 		return (NULL);
 	while (curr)

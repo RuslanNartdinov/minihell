@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaldhahe <zaldhahe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 20:28:03 by zaldhahe          #+#    #+#             */
-/*   Updated: 2024/08/20 20:28:15 by zaldhahe         ###   ########.fr       */
+/*   Created: 2024/08/20 20:28:03 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/17 18:34:12 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_lstadd_back(t_token **lst, t_token *new)
 	}
 }
 
-void	ft_lstclear(t_data *lst)
+void	ft_lstclear(t_shell *lst)
 {
 	t_token	*temp;
 
