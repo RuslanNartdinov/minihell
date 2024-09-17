@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_handler);
 	while (1)
 	{
-		data.input = readline(BLUE "brokeshell# " RESET);
+		data.input = readline("");
 		if (!data.input)
 			break ;
 		if (data.input[0] != 0)
