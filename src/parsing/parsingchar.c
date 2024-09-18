@@ -18,14 +18,15 @@
 /// @return 
 int	parse_double_quotes(t_shell *shell)
 {
-	shell->i++;
-	while (shell->input[shell->i] && shell->input[shell->i] != '\"')
+	shell->iter++;
+	while (shell->input[shell->iter] && shell->input[shell->iter] != '\"')
 	{
 		append_checker(shell);
-		if (shell->input[shell->i] == '$' && shell->input[shell->i + 1] != ' '
-			&& shell->input[shell->i + 1] != '\"' )
+		if (shell->input[shell->iter] == '$'
+			&& shell->input[shell->iter + 1] != ' '
+			&& shell->input[shell->iter + 1] != '\"' )
 			parse_dollar(shell);
-		shell->i++;
+		shell->iter++;
 	}
 	shell->typeflag = 19;
 	return (1);
@@ -34,11 +35,11 @@ int	parse_double_quotes(t_shell *shell)
 /// @brief it loops through the input string and checks for single quotes
 int	parse_single_quotes(t_shell *shell)
 {
-	shell->i++;
-	while (shell->input[shell->i] && shell->input[shell->i] != '\'')
+	shell->iter++;
+	while (shell->input[shell->iter] && shell->input[shell->iter] != '\'')
 	{
 		append_checker(shell);
-		shell->i++;
+		shell->iter++;
 	}
 	shell->typeflag = 20;
 	return (1);
@@ -49,12 +50,13 @@ int	parse_single_quotes(t_shell *shell)
 int	parse_in(t_shell *shell)
 {
 	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
-	if (shell->i > 0 && ft_strlen(shell->checker) != 0
-		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
+	if (shell->iter > 0 && ft_strlen(shell->checker) != 0
+		&& shell->input[shell->iter - 1] != ' '
+		&& shell->input[shell->iter - 1] != '\t')
 		add_token_from_checker(shell, 0, &shell->checker);
-	if (shell->input[shell->i + 1] == '<')
+	if (shell->input[shell->iter + 1] == '<')
 	{
-		shell->i++;
+		shell->iter++;
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup("<<");
@@ -74,12 +76,13 @@ int	parse_in(t_shell *shell)
 int	parse_out(t_shell *shell)
 {
 	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
-	if (shell->i > 0 && ft_strlen(shell->checker) != 0
-		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
+	if (shell->iter > 0 && ft_strlen(shell->checker) != 0
+		&& shell->input[shell->iter - 1] != ' '
+		&& shell->input[shell->iter - 1] != '\t')
 		add_token_from_checker(shell, 0, &shell->checker);
-	if (shell->input[shell->i + 1] == '>')
+	if (shell->input[shell->iter + 1] == '>')
 	{
-		shell->i++;
+		shell->iter++;
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup(">>");
@@ -99,15 +102,17 @@ int	parse_out(t_shell *shell)
 int	parse_space(t_shell *shell)
 {
 	if (ft_strlen(shell->checker) == 1
-		&& (ft_strrchr(shell->checker, ' ') || ft_strrchr(shell->checker, '\t')))
+		&& (ft_strrchr(shell->checker, ' ')
+			|| ft_strrchr(shell->checker, '\t')))
 	{
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup("");
 		return (0);
 	}
-	if (ft_strlen(shell->input) - 1 > shell->i || shell->input[shell->i] == ' '
-		|| shell->input[shell->i] == '\t')
+	if (ft_strlen(shell->input) - 1 > shell->iter
+		|| shell->input[shell->iter] == ' '
+		|| shell->input[shell->iter] == '\t')
 		shell->checker[ft_strlen(shell->checker) - 1] = '\0';
 	return (1);
 }

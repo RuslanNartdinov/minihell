@@ -6,37 +6,37 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:36:27 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:19 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:06 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *string)
 {
-	size_t	i;
+	size_t	iter;
 
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	iter = 0;
+	while (string[iter] != '\0')
+		iter++;
+	return (iter);
 }
 
-char	*ft_strdup(const char *str)
+char	*ft_strdup(const char *string)
 {
 	char	*dup;
-	int		i;
+	int		iter;
 
-	i = 0;
-	dup = (char *) malloc(ft_strlen(str) + 1);
+	iter = 0;
+	dup = (char *) malloc(ft_strlen(string) + 1);
 	if (!dup)
 		return (NULL);
-	while (str[i])
+	while (string[iter])
 	{
-		dup[i] = str[i];
-		i++;
+		dup[iter] = string[iter];
+		iter++;
 	}
-	dup[i] = '\0';
+	dup[iter] = '\0';
 	return (dup);
 }
 
@@ -49,26 +49,26 @@ void	ft_strcpy(char *dst, const char *src)
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t	i;
+	size_t	iter;
 
-	i = 0;
+	iter = 0;
 	if (n == 0)
 		return (0);
-	while (s1[i] && s2[i] && i < n - 1 && s1[i] == s2[i])
-		i++;
-	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+	while (s1[iter] && s2[iter] && iter < n - 1 && s1[iter] == s2[iter])
+		iter++;
+	return ((unsigned char) s1[iter] - (unsigned char) s2[iter]);
 }
 
-char	*ft_strrchr(const char *str, int c)
+char	*ft_strrchr(const char *string, int c)
 {
-	int	i;
+	int	iter;
 
-	i = ft_strlen(str);
-	while (i >= 0)
+	iter = ft_strlen(string);
+	while (iter >= 0)
 	{
-		if (str[i] == (char)c)
-			return ((char *)str + i);
-		i--;
+		if (string[iter] == (char)c)
+			return ((char *)string + iter);
+		iter--;
 	}
 	return (NULL);
 }

@@ -30,7 +30,7 @@ void	pre_init(t_shell *shell, char **envp)
 	shell->enviro = NULL;
 	shell->tokens = NULL;
 	shell->sflag = 0;
-	shell->i = 0;
+	shell->iter = 0;
 	env_init(shell);
 	add_to_env(shell, ft_strdup("?=0"), 1, 0);
 	incr_shlvl(shell);
@@ -38,31 +38,31 @@ void	pre_init(t_shell *shell, char **envp)
 }
 
 /// @brief it initializes the shell, 
-///			it sets the checker, tokens, typeflag, status and myenvstr
+///			it sets the checker, tokens, typeflag, status and envstr
 void	data_init(t_shell *shell)
 {
-	shell->i = 0;
+	shell->iter = 0;
 	shell->checker = ft_strdup("");
 	shell->tokens = NULL;
 	shell->typeflag = 0;
 	shell->status = 0;
-	shell->myenvstr = env_to_array(shell->enviro);
+	shell->envstr = env_to_array(shell->enviro);
 }
 
 int	ft_envfullsize(t_env *enviro)
 {
 	t_env	*curr;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	curr = enviro;
 	while (curr)
 	{
 		if (curr->key && curr->value)
-			i++;
+			iter++;
 		curr = curr->next;
 	}
-	return (i);
+	return (iter);
 }
 
 char	**env_to_array(t_env *enviro)
@@ -71,22 +71,22 @@ char	**env_to_array(t_env *enviro)
 	char	*temp;
 	char	**array;
 	t_env	*curr;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	size = ft_envfullsize(enviro);
 	if (size == 0)
 		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
 	curr = enviro;
-	while (i < size)
+	while (iter < size)
 	{
 		if (curr->key && curr->value)
 		{
 			temp = ft_strjoin(curr->key, "=");
-			array[i] = ft_strjoin(temp, curr->value);
+			array[iter] = ft_strjoin(temp, curr->value);
 			free(temp);
-			i++;
+			iter++;
 		}
 		curr = curr->next;
 	}

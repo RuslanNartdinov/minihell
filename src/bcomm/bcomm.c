@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bcomm.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:23:47 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:39:23 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:32 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void	b_unset(t_shell *shell, char **cmd)
 	t_env	*curr;
 	t_env	*prev;
 	t_env	*temp;
-	int		i;
+	int		iter;
 
-	i = 1;
-	while (cmd[i])
+	iter = 1;
+	while (cmd[iter])
 	{
 		curr = shell->enviro;
 		prev = NULL;
 		while (curr)
 		{
-			if (curr->key && !ft_strcmp(curr->key, cmd[i])
+			if (curr->key && !ft_strcmp(curr->key, cmd[iter])
 				&& curr->key[0] != '?')
 			{
 				temp = curr;
@@ -48,7 +48,7 @@ void	b_unset(t_shell *shell, char **cmd)
 			prev = curr;
 			curr = curr->next;
 		}
-		i++;
+		iter++;
 	}
 }
 
@@ -92,21 +92,21 @@ void	b_cd(t_shell *shell, char **cmd)
 
 void	b_declare(t_shell *shell, char **cmd)
 {
-	int	i;
+	int	iter;
 	int	valid;
 
 	valid = 1;
-	i = 0;
-	while (cmd[i] && valid)
+	iter = 0;
+	while (cmd[iter] && valid)
 	{
-		if (!((ft_strrchr(cmd[i], '=') && ft_strlen(cmd[i]) > 1
-					&& cmd[i][0] != '=' && is_valid_key(cmd[i]))))
+		if (!((ft_strrchr(cmd[iter], '=') && ft_strlen(cmd[iter]) > 1
+					&& cmd[iter][0] != '=' && is_valid_key(cmd[iter]))))
 			valid = 0;
-		i++;
+		iter++;
 	}
 	if (valid)
 	{
-		i--;
-		add_to_env(shell, ft_strdup(cmd[i]), 1, 0);
+		iter--;
+		add_to_env(shell, ft_strdup(cmd[iter]), 1, 0);
 	}
 }

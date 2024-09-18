@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:22:34 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:39:49 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:54:45 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	exit_overflow(char *temp, int *flag)
 	*flag = 0;
 }
 
-long	ft_atol(const char *str, char *temp, int *flag)
+long	ft_atol(const char *string, char *temp, int *flag)
 {
 	int						sign;
 	unsigned long long		result;
@@ -29,35 +29,35 @@ long	ft_atol(const char *str, char *temp, int *flag)
 	sign = 1;
 	result = 0;
 	digits = 1;
-	while (*str && (*str == 32 || (*str >= 9 && *str <= 13)))
-		str++;
-	if (*str == '-' || *str == '+')
+	while (*string && (*string == 32 || (*string >= 9 && *string <= 13)))
+		string++;
+	if (*string == '-' || *string == '+')
 	{
-		if (*str == '-')
+		if (*string == '-')
 			sign *= -1;
-		str++;
+		string++;
 	}
-	while (*str && *str >= '0' && *str <= '9')
+	while (*string && *string >= '0' && *string <= '9')
 	{
-		result = (result * 10) + *str - 48;
+		result = (result * 10) + *string - 48;
 		if (result > 9223372036854775808ULL || digits > 19)
 			return (exit_overflow(temp, flag), 255);
-		str++;
+		string++;
 		if (result > 0)
 			digits++;
 	}
 	return (result * sign);
 }
 
-int	is_numeric(char *str)
+int	is_numeric(char *string)
 {
-	if (*str == '+' || *str == '-')
-		str++;
-	while (*str)
+	if (*string == '+' || *string == '-')
+		string++;
+	while (*string)
 	{
-		if (*str < 48 || *str > 57)
+		if (*string < 48 || *string > 57)
 			return (0);
-		str++;
+		string++;
 	}
 	return (1);
 }
@@ -66,7 +66,7 @@ void	b_exit_frees(t_shell *shell, t_command *cmd)
 {
 	free_commands(&cmd);
 	ft_envclear(&shell->enviro);
-	free_split_from(shell->myenvstr, 0);
+	free_split_from(shell->envstr, 0);
 	ft_lstclear(shell);
 }
 

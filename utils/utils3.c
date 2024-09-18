@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:32:18 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:32:39 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:32 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 {
-	size_t	i;
+	size_t	iter;
 	size_t	slen;
 
-	i = 0;
+	iter = 0;
 	slen = 0;
 	while (src[slen])
 		slen++;
 	if (n == 0)
 		return (slen);
-	while (src[i] && i < n - 1)
+	while (src[iter] && iter < n - 1)
 	{
-		dest[i] = src[i];
-		i++;
+		dest[iter] = src[iter];
+		iter++;
 	}
-	dest[i] = '\0';
+	dest[iter] = '\0';
 	return (slen);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	i;
+	size_t	iter;
 
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+	iter = 0;
+	while (s1[iter] && s2[iter] && s1[iter] == s2[iter])
+		iter++;
+	return ((unsigned char) s1[iter] - (unsigned char) s2[iter]);
 }
 
 int	ft_isalnum(int c)

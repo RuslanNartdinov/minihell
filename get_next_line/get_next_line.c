@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:24:14 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:24:17 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:25 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_gnlclear(t_list **lst)
+void	free_gnl(t_list **list)
 {
 	t_list	*temp;
 
-	if (*lst)
+	if (*list)
 	{
-		while (*lst != NULL)
+		while (*list != NULL)
 		{
-			temp = *lst;
-			*lst = (*lst)->next;
+			temp = *list;
+			*list = (*list)->next;
 			free(temp->content);
 			free(temp);
 		}
-		*lst = NULL;
+		*list = NULL;
 	}
 }
 
-static void	ft_append(t_list **lst, char *new)
+static void	add_to_save(t_list **list, char *new)
 {
 	t_list	*temp;
 	t_list	*current;
@@ -43,11 +43,11 @@ static void	ft_append(t_list **lst, char *new)
 	}
 	temp->content = ft_strdup(new);
 	temp->next = NULL;
-	if (*lst == NULL)
-		*lst = temp;
+	if (*list == NULL)
+		*list = temp;
 	else
 	{
-		current = *lst;
+		current = *list;
 		while (current->next != NULL)
 		{
 			current = current->next;
@@ -56,31 +56,31 @@ static void	ft_append(t_list **lst, char *new)
 	}
 }
 
-static int	check_lst_nl(t_list *lst, char **cache)
+static int	check_lst_nl(t_list *list, char **cache)
 {
-	char	*str;
-	int		i;
+	char	*string;
+	int		iter;
 
-	i = 0;
-	if (!lst)
+	iter = 0;
+	if (!list)
 		return (0);
-	while (lst->next != NULL)
-		lst = lst->next;
-	str = ft_strdup(lst->content);
-	while (str[i] != '\0')
+	while (list->next != NULL)
+		list = list->next;
+	string = ft_strdup(list->content);
+	while (string[iter] != '\0')
 	{
-		if (str[i] == '\n')
+		if (string[iter] == '\n')
 		{
-			*cache = ft_strdup(str + i + 1);
-			str[i + 1] = '\0';
-			free(lst->content);
-			lst->content = ft_strdup(str);
-			free(str);
+			*cache = ft_strdup(string + iter + 1);
+			string[iter + 1] = '\0';
+			free(list->content);
+			list->content = ft_strdup(string);
+			free(string);
 			return (1);
 		}
-		i++;
+		iter++;
 	}
-	free(str);
+	free(string);
 	return (0);
 }
 
@@ -100,7 +100,7 @@ static void	populate_lst(t_list **list, int fd, char **cache)
 			return (free(str_buff), free(*cache));
 		}
 		str_buff[read_size] = '\0';
-		ft_append(list, str_buff);
+		add_to_save(list, str_buff);
 	}
 	free(str_buff);
 }
@@ -122,12 +122,12 @@ char	*get_next_line(int fd)
 			cache = NULL;
 			return (cache);
 		}
-		ft_append(&line, cache);
+		add_to_save(&line, cache);
 		free(cache);
 		cache = NULL;
 	}
 	populate_lst(&line, fd, &cache);
 	result = concatenate_list(&line);
-	ft_gnlclear(&line);
+	free_gnl(&line);
 	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:25:03 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:38:48 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:55:48 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static t_token	*next_cmd(t_command	*command, t_command	**head, t_token *curr)
 			temp = temp->next;
 	return (temp);
 }
+
 /// @brief it executes the command and sets the exit status
 /// @param shell 
 void	exec_line(t_shell *shell)

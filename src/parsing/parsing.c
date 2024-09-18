@@ -17,11 +17,11 @@
 /// @param shell 
 void	parser(t_shell *shell)
 {
-	while (shell->input[shell->i])
+	while (shell->input[shell->iter])
 	{
-		if (shell->input[shell->i] == '\"')
+		if (shell->input[shell->iter] == '\"')
 			parse_double_quotes(shell);
-		else if (shell->input[shell->i] == '\'')
+		else if (shell->input[shell->iter] == '\'')
 			parse_single_quotes(shell);
 		else
 		{
@@ -29,7 +29,7 @@ void	parser(t_shell *shell)
 			if (check_string(shell))
 				add_token_from_checker(shell, shell->typeflag, &shell->checker);
 		}
-		shell->i++;
+		shell->iter++;
 	}
 	add_token_from_checker(shell, shell->typeflag, &shell->checker);
 	if (shell->checker)
@@ -51,28 +51,29 @@ void	append_checker(t_shell *shell)
 		exit(1);
 	}
 	ft_strcpy(shell->temp, shell->checker);
-	shell->temp[checker_len] = shell->input[shell->i];
+	shell->temp[checker_len] = shell->input[shell->iter];
 	shell->temp[checker_len + 1] = 0;
 	if (shell->checker)
 		free(shell->checker);
 	shell->checker = shell->temp;
 }
+
 /// @brief it adds the current token to the tokens list 
 /// @param shell 
 /// @param type 
-/// @param str 
-void	add_token_from_checker(t_shell *shell, int type, char **str)
+/// @param string 
+void	add_token_from_checker(t_shell *shell, int type, char **string)
 {
 	t_token	*curr;
 
-	if (ft_strlen(*str) > 0)
+	if (ft_strlen(*string) > 0)
 	{
-		curr = ft_lstnew(*str);
+		curr = ft_lstnew(*string);
 		curr->type = type;
 		ft_lstadd_back(&shell->tokens, curr);
-		if (*str)
-			free(*str);
-		*str = ft_strdup("");
+		if (*string)
+			free(*string);
+		*string = ft_strdup("");
 		shell->typeflag = 0;
 	}
 }
@@ -103,16 +104,17 @@ void	append_checker_char(t_shell *shell, int c)
 /// @brief it checks the current character and returns the type of the token
 int	check_string(t_shell *shell)
 {
-	if (shell->input[shell->i] == '<')
+	if (shell->input[shell->iter] == '<')
 		return (parse_in(shell));
-	else if (shell->input[shell->i] == '>')
+	else if (shell->input[shell->iter] == '>')
 		return (parse_out(shell));
-	else if (shell->input[shell->i] == '|')
+	else if (shell->input[shell->iter] == '|')
 		return (parse_pipe(shell));
-	else if (shell->input[shell->i] == '$')
+	else if (shell->input[shell->iter] == '$')
 		return (parse_dollar(shell));
-	else if (shell->input[shell->i] == ' ' || shell->input[shell->i] == '\t'
-		|| ft_strlen(shell->input) - 1 <= shell->i)
+	else if (shell->input[shell->iter] == ' '
+		|| shell->input[shell->iter] == '\t'
+		|| ft_strlen(shell->input) - 1 <= shell->iter)
 		return (parse_space(shell));
 	return (0);
 }

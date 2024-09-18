@@ -94,15 +94,15 @@ void	ft_envadd_back(t_env **env, char *string, int show)
 int	ft_envsize(t_env *env)
 {
 	t_env	*curr;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	curr = env;
 	while (curr)
 	{
 		if (curr->key && curr->value && !curr->hide)
-			i++;
+			iter++;
 		curr = curr->next;
 	}
-	return (i);
+	return (iter);
 }

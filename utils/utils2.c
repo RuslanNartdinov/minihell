@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:29:54 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:24 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:06 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,39 +66,39 @@ char	*ft_itoa(int n)
 	return (itoa);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *string)
 {
-	int	i;
+	int	iter;
 	int	s;
 	int	r;
 
-	i = 0;
+	iter = 0;
 	r = 0;
 	s = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (string[iter] == ' ' || (string[iter] >= 9 && string[iter] <= 13))
+		iter++;
+	if (string[iter] == '-' || string[iter] == '+')
 	{
-		if (str[i++] == '-')
+		if (string[iter++] == '-')
 			s *= -1;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (string[iter] >= '0' && string[iter] <= '9')
 	{
 		r *= 10;
-		r += str[i++] - '0';
+		r += string[iter++] - '0';
 	}
 	return (r * s);
 }
 
-void	*ft_memset(void *str, int x, size_t n)
+void	*ft_memset(void *string, int x, size_t n)
 {
-	size_t			i;
+	size_t			iter;
 	unsigned char	*ptr;
 
-	i = 0;
-	ptr = (unsigned char *) str;
-	while (i < n)
-		ptr[i++] = x;
-	str = ptr;
-	return (str);
+	iter = 0;
+	ptr = (unsigned char *) string;
+	while (iter < n)
+		ptr[iter++] = x;
+	string = ptr;
+	return (string);
 }

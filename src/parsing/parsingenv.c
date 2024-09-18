@@ -14,18 +14,18 @@
 
 /// @brief it checks if the key is valid
 ///        by checking if it is alphanumeric or an underscore
-/// @param str 
+/// @param string 
 /// @return 
-int	is_valid_key(char *str)
+int	is_valid_key(char *string)
 {
-	int	i;
+	int	iter;
 
-	i = 0;
-	while (str[i] && str[i] != '=')
+	iter = 0;
+	while (string[iter] && string[iter] != '=')
 	{
-		if (ft_isalnum(str[i]) || str[i] == '_')
+		if (ft_isalnum(string[iter]) || string[iter] == '_')
 		{
-			i++;
+			iter++;
 		}
 		else
 		{
@@ -38,10 +38,10 @@ int	is_valid_key(char *str)
 /// @brief it checks for duplicate environment variables
 ///        and updates the value if found else adds a new one
 /// @param shell
-/// @param str 
+/// @param string 
 /// @param sethide 
 /// @return 
-int	check_env_dupes(t_shell *data, char *str, int sethide)
+int	check_env_dupes(t_shell *data, char *string, int sethide)
 {
 	int		flag;
 	char	**split;
@@ -49,7 +49,7 @@ int	check_env_dupes(t_shell *data, char *str, int sethide)
 
 	curr = data->enviro;
 	flag = 1;
-	split = ft_split(str, '=');
+	split = ft_split(string, '=');
 	data->temp = split[0];
 	while (curr)
 	{

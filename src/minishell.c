@@ -38,7 +38,8 @@ void	close_std(void)
 }
 
 /// @brief it adds the input to the history and initializes the shell,
-///			then it parses the input, sets the type of the tokens and executes the line
+///			then it parses the input, sets the type of the tokens and
+///			executes the line
 ///  		after that it clears the shell
 /// @param shell 
 void	minishell(t_shell *shell)
@@ -48,7 +49,7 @@ void	minishell(t_shell *shell)
 	parser(shell);
 	set_type(shell);
 	exec_line(shell);
-	free_split_from(shell->myenvstr, 0);
+	free_split_from(shell->envstr, 0);
 	ft_lstclear(shell);
 }
 

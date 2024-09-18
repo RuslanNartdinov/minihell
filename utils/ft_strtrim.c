@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 19:46:25 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:06 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:32 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 static int	is_set_c(char c, char const *sep)
 {
-	int	i;
+	int	iter;
 
-	i = 0;
-	while (sep[i])
+	iter = 0;
+	while (sep[iter])
 	{
-		if (sep[i] == c)
+		if (sep[iter] == c)
 		{
 			return (1);
 		}
-		i++;
+		iter++;
 	}
 	return (0);
 }
 
 static	int	start_index(char const *s1, char const *set)
 {
-	int	i;
+	int	iter;
 
-	i = 0;
-	while (s1[i] && is_set_c(s1[i], set))
-		i++;
-	return (i);
+	iter = 0;
+	while (s1[iter] && is_set_c(s1[iter], set))
+		iter++;
+	return (iter);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)

@@ -32,14 +32,14 @@ void	set_exitstatus(t_shell *shell)
 /// @param shell 
 void	set_pwd(t_shell *shell)
 {
-	char	*str;
+	char	*string;
 	char	*finalstr;
 	char	*temp;
 
-	str = getcwd(NULL, PATH_MAX);
+	string = getcwd(NULL, PATH_MAX);
 	temp = ft_strjoin("PWD", "=");
-	finalstr = ft_strjoin(temp, str);
-	free(str);
+	finalstr = ft_strjoin(temp, string);
+	free(string);
 	free(temp);
 	add_to_env(shell, finalstr, 0, 0);
 }
@@ -69,17 +69,17 @@ void	incr_shlvl(t_shell *shell)
 
 /// @brief it sets the environment variables, and a
 /// @param shell 
-void env_init(t_shell *shell)
+void	env_init(t_shell *shell)
 {
 	if (shell->enviro)
 		return ;
 	shell->enviro = NULL;
-	while (shell->envp[shell->i])
+	while (shell->envp[shell->iter])
 	{
-		ft_envadd_back(&shell->enviro, shell->envp[shell->i], 0);
-		shell->i++;
+		ft_envadd_back(&shell->enviro, shell->envp[shell->iter], 0);
+		shell->iter++;
 	}
-	shell->i = 0;
+	shell->iter = 0;
 }
 
 /// @brief it checks if there are any duplicates in the environment variables

@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:27:21 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:02 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:57:55 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,59 +20,60 @@ static int	is_sep_c(char c, char sep)
 		return (0);
 }
 
-static int	count_str(char const *str, char sep)
+static int	count_str(char const *string, char sep)
 {
-	int	i;
+	int	iter;
 	int	count;
 
-	i = 0;
+	iter = 0;
 	count = 0;
-	while (str[i] != '\0')
+	while (string[iter] != '\0')
 	{
-		if (is_sep_c(str[i], sep) == 0
-			&& (is_sep_c(str[i + 1], sep) == 1 || str[i + 1] == '\0'))
+		if (is_sep_c(string[iter], sep) == 0
+			&& (is_sep_c(string[iter + 1], sep) == 1
+				|| string[iter + 1] == '\0'))
 			count++;
-		i++;
+		iter++;
 	}
 	return (count);
 }
 
-static char	*add_word(char const *str, int len)
+static char	*add_word(char const *string, int len)
 {
 	char	*word;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	word = (char *)malloc((len + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
-	while (i < len)
+	while (iter < len)
 	{
-		word[i] = *str++;
-		i++;
+		word[iter] = *string++;
+		iter++;
 	}
-	word[i] = '\0';
+	word[iter] = '\0';
 	return (word);
 }
 
 static void	split_words(char **splitted, int words, char const *s, char c)
 {
 	int		w;
-	int		j;
+	int		jiter;
 
 	w = 0;
-	j = 0;
+	jiter = 0;
 	while (w < words)
 	{
-		j = 0;
+		jiter = 0;
 		while (*s && is_sep_c(*s, c) == 1)
 			s++;
 		while (*s && is_sep_c(*s, c) == 0)
 		{
 			s++;
-			j++;
+			jiter++;
 		}
-		splitted[w++] = add_word(s - j, j);
+		splitted[w++] = add_word(s - jiter, jiter);
 	}
 }
 

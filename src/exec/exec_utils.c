@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:24:22 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:38:44 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:54:45 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	exit_free(t_command *cmd, t_shell *shell, int exit_status)
 		free_commands(&cmd);
 	if (shell)
 	{
-		if (shell->myenvstr)
-			free_args(shell->myenvstr);
+		if (shell->envstr)
+			free_args(shell->envstr);
 		ft_envclear(&shell->enviro);
 	}
 	ft_lstclear(shell);
@@ -35,7 +35,7 @@ void	exec_child(t_command *cmd, t_shell *shell, t_child_params *params)
 	exit_status = 1;
 	if (cmd && cmd->command[0] && !cmd->is_bcommand)
 	{
-		execve(cmd->command[0], cmd->command, shell->myenvstr);
+		execve(cmd->command[0], cmd->command, shell->envstr);
 		if (errno == ENOENT)
 			exit_status = exec_printerr(cmd->command[0]);
 		else

@@ -3,35 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_arg_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:27:49 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:38:28 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:25 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 /// @brief finds the last command in the list
-t_command	*cmd_lstlast(t_command *lst)
+t_command	*cmd_lstlast(t_command *list)
 {
-	if (!lst)
+	if (!list)
 		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
+	while (list->next != NULL)
+		list = list->next;
+	return (list);
 }
 
 /// @brief frees the arguments of the command 
-/// @param lst 
-void	free_commands(t_command **lst)
+/// @param list 
+void	free_commands(t_command **list)
 {
 	t_command	*temp;
 
-	while (*lst)
+	while (*list)
 	{
-		temp = *lst;
-		*lst = (*lst)->next;
+		temp = *list;
+		*list = (*list)->next;
 		if (temp->fd_in > -1)
 			close(temp->fd_in);
 		if (temp->fd_out > -1)
@@ -39,19 +39,19 @@ void	free_commands(t_command **lst)
 		free_args(temp->command);
 		free(temp);
 	}
-	*lst = NULL;
+	*list = NULL;
 }
 
 /// @brief adds a command to the back of the list
-void	cmd_add_back(t_command **lst, t_command *new)
+void	cmd_add_back(t_command **list, t_command *new)
 {
 	t_command	*temp;
 
-	if (*lst == NULL)
-		*lst = new;
+	if (*list == NULL)
+		*list = new;
 	else
 	{
-		temp = cmd_lstlast(*lst);
+		temp = cmd_lstlast(*list);
 		temp->next = new;
 	}
 }

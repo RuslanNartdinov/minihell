@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:28:03 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:12 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:25 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,41 +25,41 @@ t_token	*ft_lstnew(char *word)
 	return (node);
 }
 
-t_token	*ft_lstlast(t_token *lst)
+t_token	*ft_lstlast(t_token *list)
 {
-	if (!lst)
+	if (!list)
 		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
+	while (list->next != NULL)
+		list = list->next;
+	return (list);
 }
 
-void	ft_lstadd_back(t_token **lst, t_token *new)
+void	ft_lstadd_back(t_token **list, t_token *new)
 {
 	t_token	*temp;
 
-	if (*lst == NULL)
-		*lst = new;
+	if (*list == NULL)
+		*list = new;
 	else
 	{
-		temp = ft_lstlast(*lst);
+		temp = ft_lstlast(*list);
 		temp->next = new;
 	}
 }
 
-void	ft_lstclear(t_shell *lst)
+void	ft_lstclear(t_shell *list)
 {
 	t_token	*temp;
 
-	while (lst->tokens)
+	while (list->tokens)
 	{
-		temp = lst->tokens;
-		lst->tokens = lst->tokens->next;
+		temp = list->tokens;
+		list->tokens = list->tokens->next;
 		if (temp->content)
 			free(temp->content);
 		if (temp)
 			free(temp);
 		temp = NULL;
 	}
-	lst->tokens = NULL;
+	list->tokens = NULL;
 }

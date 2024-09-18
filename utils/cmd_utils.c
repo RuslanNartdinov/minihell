@@ -6,7 +6,7 @@
 /*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 19:00:43 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:33:56 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:50:06 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,74 +14,74 @@
 
 void	free_args(char **args)
 {
-	int	i;
+	int	iter;
 
-	i = 0;
-	while (args[i] != NULL)
+	iter = 0;
+	while (args[iter] != NULL)
 	{
-		free(args[i]);
-		i++;
+		free(args[iter]);
+		iter++;
 	}
 	free(args);
 }
 
 static	char	*ft_get_cmd_path_from_path(char *cmd, char **path)
 {
-	int		i;
+	int		iter;
 	char	*cmd_path;
 
-	i = 0;
-	while (path[i])
+	iter = 0;
+	while (path[iter])
 	{
-		cmd_path = ft_strjoin(path[i], cmd);
+		cmd_path = ft_strjoin(path[iter], cmd);
 		if (!cmd_path)
 			return (NULL);
 		if (access(cmd_path, F_OK) == 0)
 			return (cmd_path);
 		free(cmd_path);
-		i++;
+		iter++;
 	}
 	return (ft_strdup(cmd));
 }
 
-static	char	**ft_strjoin_arr(char **arr, char *str)
+static	char	**ft_strjoin_arr(char **arr, char *string)
 {
-	int		i;
+	int		iter;
 	char	**new_arr;
 	char	*temp;
 
-	i = 0;
-	while (arr[i])
-		i++;
-	new_arr = malloc(sizeof(char *) * (i + 1));
+	iter = 0;
+	while (arr[iter])
+		iter++;
+	new_arr = malloc(sizeof(char *) * (iter + 1));
 	if (!new_arr)
 		return (NULL);
-	i = 0;
-	while (arr[i])
+	iter = 0;
+	while (arr[iter])
 	{
-		temp = arr[i];
-		new_arr[i] = ft_strjoin(arr[i], str);
+		temp = arr[iter];
+		new_arr[iter] = ft_strjoin(arr[iter], string);
 		free(temp);
-		i++;
+		iter++;
 	}
-	new_arr[i] = NULL;
-	i = 0;
+	new_arr[iter] = NULL;
+	iter = 0;
 	free(arr);
 	return (new_arr);
 }
 
 char	*ft_get_cmd_path(char *cmd, char **envp)
 {
-	int		i;
+	int		iter;
 	char	**path;
 	char	*cmd_path;
 
-	i = 0;
-	while (envp[i])
+	iter = 0;
+	while (envp[iter])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(envp[iter], "PATH=", 5) == 0)
 		{
-			path = ft_split(envp[i] + 5, ':');
+			path = ft_split(envp[iter] + 5, ':');
 			if (!path)
 				return (NULL);
 			path = ft_strjoin_arr(path, "/");
@@ -91,7 +91,7 @@ char	*ft_get_cmd_path(char *cmd, char **envp)
 			free_args(path);
 			return (cmd_path);
 		}
-		i++;
+		iter++;
 	}
 	return (NULL);
 }
@@ -99,18 +99,18 @@ char	*ft_get_cmd_path(char *cmd, char **envp)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*joined;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	if (!s1 || !s2)
 		return (NULL);
 	joined = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!joined)
 		return (NULL);
 	while (*s1)
-		joined[i++] = *s1++;
+		joined[iter++] = *s1++;
 	while (*s2)
-		joined[i++] = *s2++;
-	joined[i] = '\0';
+		joined[iter++] = *s2++;
+	joined[iter] = '\0';
 	return (joined);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 18:05:00 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:39:52 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:52 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	process_echo_arg(char **com, t_shell *shell, int *flag, int *not_words)
 {
 	char	*temp;
 
-	temp = com[shell->i];
+	temp = com[shell->iter];
 	if (!ft_strncmp(temp, "-n", 2) && *not_words == 1)
 	{
-		shell->j = 1;
-		while (temp[shell->j] == 'n')
-			shell->j++;
-		if (temp[shell->j])
+		shell->jiter = 1;
+		while (temp[shell->jiter] == 'n')
+			shell->jiter++;
+		if (temp[shell->jiter])
 		{
 			*not_words = 0;
 			printf("%s", temp);
-			if (com[shell->i + 1])
+			if (com[shell->iter + 1])
 				printf(" ");
 		}
 		else
@@ -68,7 +68,7 @@ void	process_echo_arg(char **com, t_shell *shell, int *flag, int *not_words)
 	{
 		*not_words = 0;
 		printf("%s", temp);
-		if (com[shell->i + 1])
+		if (com[shell->iter + 1])
 			printf(" ");
 	}
 }
@@ -80,12 +80,12 @@ void	b_echo(t_shell *shell, char **com)
 	int	not_words;
 
 	flag = 0;
-	shell->i = 1;
+	shell->iter = 1;
 	not_words = 1;
-	while (com[shell->i] != NULL)
+	while (com[shell->iter] != NULL)
 	{
 		process_echo_arg(com, shell, &flag, &not_words);
-		shell->i++;
+		shell->iter++;
 	}
 	if (!flag)
 		printf("\n");

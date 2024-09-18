@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:30:08 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:38:51 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:54:45 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 void	handle_command(t_token *temp, char **command,
 	t_shell *shell, t_cmd_data *cmd_data)
 {
-	if (cmd_data->i == 0 && temp->type != 23)
+	if (cmd_data->iter == 0 && temp->type != 23)
 	{
-		command[cmd_data->i] = ft_get_cmd_path(temp->content, shell->myenvstr);
-		if (!command[cmd_data->i])
-			command[cmd_data->i] = ft_strdup(temp->content);
+		command[cmd_data->iter] = ft_get_cmd_path(temp->content, shell->envstr);
+		if (!command[cmd_data->iter])
+			command[cmd_data->iter] = ft_strdup(temp->content);
 	}
-	else if (cmd_data->i == 0 && (!command[cmd_data->i]
+	else if (cmd_data->iter == 0 && (!command[cmd_data->iter]
 			|| temp->type == 23))
-		command[cmd_data->i] = ft_strdup(temp->content);
+		command[cmd_data->iter] = ft_strdup(temp->content);
 	else
-		command[cmd_data->i] = ft_strdup(temp->content);
-	cmd_data->i++;
+		command[cmd_data->iter] = ft_strdup(temp->content);
+	cmd_data->iter++;
 }
 
 void	read_in_out(t_token *temp, t_shell_bundle *bundle)
@@ -63,10 +63,10 @@ int	handle_redirection(t_token *temp, char **command, t_shell_bundle *bundle)
 	{
 		read_in_out(temp, bundle);
 		if (temp->type == 12 && !validate_fd(bundle->cmd_data->fd_in,
-				bundle->cmd_data->i, command))
+				bundle->cmd_data->iter, command))
 			return (0);
 		else if (temp->type == 13 && !validate_fd(bundle->cmd_data->fd_out,
-				bundle->cmd_data->i, command))
+				bundle->cmd_data->iter, command))
 			return (0);
 	}
 	else if (temp->next && temp->type == 15)
@@ -86,11 +86,11 @@ int	handle_redirection(t_token *temp, char **command, t_shell_bundle *bundle)
 	return (1);
 }
 
-int	validate_fd(int cmd_fd, int i, char **command)
+int	validate_fd(int cmd_fd, int iter, char **command)
 {
-	if (cmd_fd == -1 && i > 0)
+	if (cmd_fd == -1 && iter > 0)
 	{
-		command[i] = NULL;
+		command[iter] = NULL;
 		free_args(command);
 		return (0);
 	}
@@ -105,9 +105,9 @@ void	handle_syntax_error(t_shell_bundle *bundle,
 	ft_putstr_fd
 		("minishell: syntax error near unexpected token `newline'\n", 2);
 	bundle->shell->status = 258;
-	if (bundle->cmd_data->i > 0)
+	if (bundle->cmd_data->iter > 0)
 	{
-		command[bundle->cmd_data->i] = NULL;
+		command[bundle->cmd_data->iter] = NULL;
 		free_args(command);
 	}
 	bundle->head = &temp;

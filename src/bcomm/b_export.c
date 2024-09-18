@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:20:57 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:39:42 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:32 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,23 @@ void	b_sort(char **arr, int size)
 {
 	int		swap;
 	char	*temp;
-	int		i;
+	int		iter;
 
 	swap = 1;
 	while (swap)
 	{
-		i = 0;
+		iter = 0;
 		swap = 0;
-		while (i < size - 1)
+		while (iter < size - 1)
 		{
-			if (ft_strcmp(arr[i], arr[i + 1]) > 0)
+			if (ft_strcmp(arr[iter], arr[iter + 1]) > 0)
 			{
-				temp = arr[i];
-				arr[i] = arr[i + 1];
-				arr[i + 1] = temp;
+				temp = arr[iter];
+				arr[iter] = arr[iter + 1];
+				arr[iter + 1] = temp;
 				swap = 1;
 			}
-			i++;
+			iter++;
 		}
 	}
 }
@@ -56,22 +56,22 @@ char	**exp_to_array(t_env *enviro)
 	char	*temp;
 	char	**array;
 	t_env	*curr;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	size = ft_envsize(enviro);
 	if (size == 0)
 		return (NULL);
 	array = malloc((size + 1) * sizeof(char *));
 	curr = enviro;
-	while (i < size)
+	while (iter < size)
 	{
 		if (curr->key && curr->value && !curr->hide)
 		{
 			temp = ft_strjoin(curr->key, "=");
-			array[i] = ft_strjoin(temp, curr->value);
+			array[iter] = ft_strjoin(temp, curr->value);
 			free(temp);
-			i++;
+			iter++;
 		}
 		curr = curr->next;
 	}
@@ -82,33 +82,33 @@ char	**exp_to_array(t_env *enviro)
 void	print_export(t_shell *shell)
 {
 	char	**tempenv;
-	int		i;
+	int		iter;
 
-	i = 0;
+	iter = 0;
 	tempenv = exp_to_array(shell->enviro);
 	b_sort(tempenv, ft_envsize(shell->enviro));
-	while (tempenv[i])
+	while (tempenv[iter])
 	{
-		printf("%s\n", tempenv[i++]);
+		printf("%s\n", tempenv[iter++]);
 	}
 	free_split_from(tempenv, 0);
 }
 
 void	b_export(t_shell *shell, char **cmd)
 {
-	int	i;
+	int	iter;
 
-	i = 0;
+	iter = 0;
 	if (!cmd[1])
 		print_export(shell);
 	else
 	{
-		while (cmd[i])
+		while (cmd[iter])
 		{
-			if (ft_strrchr(cmd[i], '=') && ft_strlen(cmd[i]) > 1
-				&& cmd[i][0] != '=' && is_valid_key(cmd[i]))
-				add_to_env(shell, ft_strdup(cmd[i]), 0, 1);
-			i++;
+			if (ft_strrchr(cmd[iter], '=') && ft_strlen(cmd[iter]) > 1
+				&& cmd[iter][0] != '=' && is_valid_key(cmd[iter]))
+				add_to_env(shell, ft_strdup(cmd[iter]), 0, 1);
+			iter++;
 		}
 	}
 }

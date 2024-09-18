@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:32:06 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/18 14:38:31 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:49:32 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_command	*set_command(char **command, t_token *temp,
 		temp = temp->next;
 	}
 	*head = handle_pipe(temp);
-	command[cmd_data.i] = NULL;
+	command[cmd_data.iter] = NULL;
 	return (new_command(command, cmd_data.fd_in,
 			cmd_data.fd_out, cmd_data.fd_type));
 }
@@ -86,7 +86,7 @@ void	init_cmd_data(t_cmd_data *cmd_data)
 	cmd_data->fd_in = -10;
 	cmd_data->fd_out = -10;
 	cmd_data->fd_type = -10;
-	cmd_data->i = 0;
+	cmd_data->iter = 0;
 }
 
 /// @brief takes the token and adds it to the command
@@ -97,9 +97,9 @@ char	**cmd_size_init(t_token *temp)
 	t_token	*count;
 	size_t	c_len;
 	char	**command;
-	size_t	i;
+	size_t	iter;
 
-	i = 0;
+	iter = 0;
 	c_len = 0;
 	count = temp;
 	command = NULL;
@@ -114,9 +114,9 @@ char	**cmd_size_init(t_token *temp)
 		count = count->next;
 	}
 	command = (char **)malloc((c_len + 1) * sizeof(char *));
-	while (i <= c_len)
+	while (iter <= c_len)
 	{
-		command[i++] = NULL;
+		command[iter++] = NULL;
 	}
 	return (command);
 }
