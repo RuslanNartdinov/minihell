@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:29:53 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:33:49 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:34:11 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static void	check_fd_type(t_token *temp)
 		return ;
 	if (temp->next && !ft_strncmp(temp->content, "<", 1)
 		&& ft_strlen(temp->content) == 1)
-		temp->type = FD_IN;
+		temp->type = 12;
 	else if (temp->next && !ft_strncmp(temp->content, ">", 1)
 		&& ft_strlen(temp->content) == 1)
-		temp->type = FD_OUT;
+		temp->type = 13;
 	else if (!ft_strncmp(temp->content, ">>", 2))
-		temp->type = APPEND;
+		temp->type = 14;
 	else if (!ft_strncmp(temp->content, "<<", 2))
-		temp->type = HEREDOC;
+		temp->type = 15;
 }
 
 /// @brief it checks if the token is a command
@@ -42,15 +42,15 @@ static int	check_if_command(t_shell *shell, t_token *curr)
 	temp = shell->tokens;
 	while (temp && temp != curr)
 	{
-		if (temp->type == COMMAND || temp->type == BCOMMAND
-			|| temp->type == FILENAME || temp->type == LIMITER)
+		if (temp->type == 11 || temp->type == 23
+			|| temp->type == 16 || temp->type == 17)
 			command_flag = 1;
-		else if (temp->type == PIPE)
+		else if (temp->type == 18)
 			command_flag = 0;
-		else if (temp->type == FD_IN || temp->type == FD_OUT
-			|| temp->type == APPEND)
+		else if (temp->type == 12 || temp->type == 13
+			|| temp->type == 14)
 			command_flag = 3;
-		else if (temp->type == HEREDOC)
+		else if (temp->type == 15)
 			command_flag = 4;
 		temp = temp->next;
 	}
@@ -64,22 +64,22 @@ void	check_if_bcommand(t_token *temp)
 	if (temp->type)
 		return ;
 	if (!ft_strncmp(temp->content, "echo", 4))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "cd", 2))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "pwd", 3))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "export", 6))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "unset", 5))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "env", 3))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (!ft_strncmp(temp->content, "exit", 4))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 	else if (ft_strrchr(temp->content, '=') && ft_strlen(temp->content) > 1
 		&& temp->content[0] != '=' && is_valid_key(temp->content))
-		temp->type = BCOMMAND;
+		temp->type = 23;
 }
 
 /// @brief it sets the type of the tokens
@@ -88,15 +88,15 @@ void	check_if_bcommand(t_token *temp)
 static void	token_type(t_token *temp, t_shell *shell)
 {
 	if (!ft_strncmp(temp->content, "|", 1) && ft_strlen(temp->content) == 1)
-		temp->type = PIPE;
+		temp->type = 18;
 	else if (check_if_command(shell, temp) == 1)
-		temp->type = FLAG;
+		temp->type = 24;
 	else if (check_if_command(shell, temp) == 0)
-		temp->type = COMMAND;
+		temp->type = 11;
 	else if (check_if_command(shell, temp) == 3)
-		temp->type = FILENAME;
+		temp->type = 16;
 	else if (check_if_command(shell, temp) == 4)
-		temp->type = LIMITER;
+		temp->type = 17;
 }
 
 /// @brief it loops through the tokens and sets the filename
@@ -110,8 +110,8 @@ void	set_type(t_shell *shell)
 	temp = shell->tokens;
 	while (temp)
 	{
-		if (temp->type == DOLLAR)
-			temp->type = WORD;
+		if (temp->type == 21)
+			temp->type = 0;
 		if (!temp->type)
 		{
 			check_fd_type(temp);

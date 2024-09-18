@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   bcomm_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 21:49:17 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:31:44 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:39:39 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../exec/executor.h"
+#include "../../inc/minishell.h"
 
 void	bcomm_exec(t_command *cmd, t_shell *shell, t_child_params	*params)
 {

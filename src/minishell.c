@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_handler);
 	while (1)
 	{
-		shell.input = readline("\033[0;32m" "minihell$ " "\033[0m");
+		shell.input = readline("\033[31m" "minihell$ " "\033[0m");
 		if (!shell.input)
 			break ;
 		if (shell.input[0] != 0)

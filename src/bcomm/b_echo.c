@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   b_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 18:05:00 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:30:45 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:39:52 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../exec/executor.h"
+#include "../../inc/minishell.h"
 
 /// @brief it is the function to get the current working directory
 /// @param  

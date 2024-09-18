@@ -27,7 +27,7 @@ int	parse_double_quotes(t_shell *shell)
 			parse_dollar(shell);
 		shell->i++;
 	}
-	shell->typeflag = DQUOTES;
+	shell->typeflag = 19;
 	return (1);
 }
 
@@ -40,7 +40,7 @@ int	parse_single_quotes(t_shell *shell)
 		append_checker(shell);
 		shell->i++;
 	}
-	shell->typeflag = SQUOTES;
+	shell->typeflag = 20;
 	return (1);
 }
 
@@ -51,21 +51,21 @@ int	parse_in(t_shell *shell)
 	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
 	if (shell->i > 0 && ft_strlen(shell->checker) != 0
 		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
-		add_token_from_checker(shell, WORD, &shell->checker);
+		add_token_from_checker(shell, 0, &shell->checker);
 	if (shell->input[shell->i + 1] == '<')
 	{
 		shell->i++;
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup("<<");
-		add_token_from_checker(shell, HEREDOC, &shell->checker);
+		add_token_from_checker(shell, 15, &shell->checker);
 	}
 	else
 	{
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup("<");
-		add_token_from_checker(shell, FD_IN, &shell->checker);
+		add_token_from_checker(shell, 12, &shell->checker);
 	}
 	return (1);
 }
@@ -76,21 +76,21 @@ int	parse_out(t_shell *shell)
 	shell->checker[ft_strlen(shell->checker) - 1] = '\0';
 	if (shell->i > 0 && ft_strlen(shell->checker) != 0
 		&& shell->input[shell->i - 1] != ' ' && shell->input[shell->i - 1] != '\t')
-		add_token_from_checker(shell, WORD, &shell->checker);
+		add_token_from_checker(shell, 0, &shell->checker);
 	if (shell->input[shell->i + 1] == '>')
 	{
 		shell->i++;
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup(">>");
-		add_token_from_checker(shell, APPEND, &shell->checker);
+		add_token_from_checker(shell, 14, &shell->checker);
 	}
 	else
 	{
 		if (shell->checker)
 			free(shell->checker);
 		shell->checker = ft_strdup(">");
-		add_token_from_checker(shell, FD_OUT, &shell->checker);
+		add_token_from_checker(shell, 13, &shell->checker);
 	}
 	return (1);
 }

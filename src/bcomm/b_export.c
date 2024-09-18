@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   b_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:20:57 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:31:40 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:39:42 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../exec/executor.h"
+#include "../../inc/minishell.h"
 
 void	b_env(t_shell *shell)
 {

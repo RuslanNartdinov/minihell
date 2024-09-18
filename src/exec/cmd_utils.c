@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:32:06 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:32:03 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:38:31 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../../inc/minishell.h"
 
 /// @brief checks if the type is valid command type
 /// @param type 
 /// @return 
 int	is_valid_type(int type)
 {
-	if (type == COMMAND || type == FLAG
-		|| type == BCOMMAND || type == DQUOTES
-		|| type == SQUOTES)
+	if (type == 11 || type == 24
+		|| type == 23 || type == 19
+		|| type == 20)
 	{
 		return (1);
 	}
-	else if (type == FD_IN || type == FD_OUT
-		|| type == APPEND || type == HEREDOC)
+	else if (type == 12 || type == 13
+		|| type == 14 || type == 15)
 	{
 		return (2);
 	}
@@ -47,7 +47,7 @@ t_command	*set_command(char **command, t_token *temp,
 	bundle.shell = shell;
 	bundle.head = head;
 	bundle.cmd_data = &cmd_data;
-	while (temp && temp->type != PIPE)
+	while (temp && temp->type != 18)
 	{
 		if (!handle_token_type(temp, command, &bundle))
 		{
@@ -83,9 +83,9 @@ int	handle_token_type(t_token *temp, char **command, t_shell_bundle *bundle)
 /// @param cmd_data 
 void	init_cmd_data(t_cmd_data *cmd_data)
 {
-	cmd_data->fd_in = NO_FD;
-	cmd_data->fd_out = NO_FD;
-	cmd_data->fd_type = NO_FD;
+	cmd_data->fd_in = -10;
+	cmd_data->fd_out = -10;
+	cmd_data->fd_type = -10;
 	cmd_data->i = 0;
 }
 
@@ -103,11 +103,11 @@ char	**cmd_size_init(t_token *temp)
 	c_len = 0;
 	count = temp;
 	command = NULL;
-	while (count && count->type != PIPE)
+	while (count && count->type != 18)
 	{
-		if (count->type == COMMAND || count->type == FLAG
-			|| count->type == BCOMMAND || count->type == DQUOTES
-			|| count->type == SQUOTES)
+		if (count->type == 11 || count->type == 24
+			|| count->type == 23 || count->type == 19
+			|| count->type == 20)
 		{
 			c_len++;
 		}

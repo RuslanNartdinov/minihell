@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:25:03 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:32:18 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:38:48 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../../inc/minishell.h"
 
 extern int	g_exit_code;
 
@@ -70,7 +70,7 @@ static t_token	*next_cmd(t_command	*command, t_command	**head, t_token *curr)
 	if (command)
 		cmd_add_back(head, command);
 	else
-		while (temp && temp->type != PIPE)
+		while (temp && temp->type != 18)
 			temp = temp->next;
 	return (temp);
 }
@@ -105,7 +105,7 @@ void	exec_line(t_shell *shell)
 /// @returns the next token that is not a pipe
 t_token	*handle_pipe(t_token *temp)
 {
-	if (temp && temp->type == PIPE)
+	if (temp && temp->type == 18)
 		temp = temp->next;
 	return (temp);
 }

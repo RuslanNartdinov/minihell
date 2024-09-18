@@ -20,7 +20,7 @@ leak: $(NAME)
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes  --suppressions=leaks.supp ./minishell
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -lreadline -lhistory -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -L/opt/vagrant/embedded/lib -lreadline -lncurses -lhistory -o $(NAME)
 
 
 clean : 

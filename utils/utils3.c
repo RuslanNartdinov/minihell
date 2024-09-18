@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 20:32:18 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:34:28 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:32:39 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ void	set_filename(t_token *tokens)
 	temp = tokens;
 	while (temp)
 	{
-		if (temp->next && (temp->type == FD_IN || temp->type == FD_OUT
-				|| temp->type == APPEND))
+		if (temp->next && (temp->type == 12 || temp->type == 13
+				|| temp->type == 14))
 		{
-			temp->next->type = FILENAME;
+			temp->next->type = 16;
 		}
-		else if (temp->next && temp->type == HEREDOC)
+		else if (temp->next && temp->type == 15)
 		{
-			temp->next->type = LIMITER;
+			temp->next->type = 17;
 		}
 		temp = temp->next;
 	}

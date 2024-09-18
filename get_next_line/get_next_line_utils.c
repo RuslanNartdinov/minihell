@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 19:42:49 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:28:21 by mbabayan         ###   ########.fr       */
+/*   Created: 2024/09/18 14:24:04 by mbabayan          #+#    #+#             */
+/*   Updated: 2024/09/18 14:24:07 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

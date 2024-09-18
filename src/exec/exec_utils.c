@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:24:22 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:32:14 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:38:44 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../../inc/minishell.h"
 #include <errno.h>
 
 void	exit_free(t_command *cmd, t_shell *shell, int exit_status)
@@ -63,7 +63,7 @@ void	start_child(t_command *cmd, t_shell *shell, t_child_params *params)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);
 		close(cmd->fd_in);
-		cmd->fd_in = NO_FD;
+		cmd->fd_in = -10;
 	}
 	else if (!params->is_first)
 	{

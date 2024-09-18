@@ -73,7 +73,7 @@ void	add_token_from_checker(t_shell *shell, int type, char **str)
 		if (*str)
 			free(*str);
 		*str = ft_strdup("");
-		shell->typeflag = WORD;
+		shell->typeflag = 0;
 	}
 }
 

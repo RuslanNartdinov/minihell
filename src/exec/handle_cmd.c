@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbabayan <mbabayan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: mbabayan <mbabayan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:30:08 by mbabayan          #+#    #+#             */
-/*   Updated: 2024/09/17 18:32:25 by mbabayan         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:38:51 by mbabayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../../inc/minishell.h"
 
 void	handle_command(t_token *temp, char **command,
 	t_shell *shell, t_cmd_data *cmd_data)
 {
-	if (cmd_data->i == 0 && temp->type != BCOMMAND)
+	if (cmd_data->i == 0 && temp->type != 23)
 	{
 		command[cmd_data->i] = ft_get_cmd_path(temp->content, shell->myenvstr);
 		if (!command[cmd_data->i])
 			command[cmd_data->i] = ft_strdup(temp->content);
 	}
 	else if (cmd_data->i == 0 && (!command[cmd_data->i]
-			|| temp->type == BCOMMAND))
+			|| temp->type == 23))
 		command[cmd_data->i] = ft_strdup(temp->content);
 	else
 		command[cmd_data->i] = ft_strdup(temp->content);
@@ -31,7 +31,7 @@ void	handle_command(t_token *temp, char **command,
 
 void	read_in_out(t_token *temp, t_shell_bundle *bundle)
 {
-	if (temp->type == FD_OUT || temp->type == APPEND)
+	if (temp->type == 13 || temp->type == 14)
 	{
 		if (bundle->cmd_data->fd_out > -1)
 			close(bundle->cmd_data->fd_out);
@@ -43,7 +43,7 @@ void	read_in_out(t_token *temp, t_shell_bundle *bundle)
 		}
 		*(bundle->head) = temp;
 	}
-	else if (temp->type == FD_IN)
+	else if (temp->type == 12)
 	{
 		if (bundle->cmd_data->fd_in > -1)
 			close(bundle->cmd_data->fd_in);
@@ -59,20 +59,20 @@ void	read_in_out(t_token *temp, t_shell_bundle *bundle)
 
 int	handle_redirection(t_token *temp, char **command, t_shell_bundle *bundle)
 {
-	if (temp->next && temp->type != HEREDOC)
+	if (temp->next && temp->type != 15)
 	{
 		read_in_out(temp, bundle);
-		if (temp->type == FD_IN && !validate_fd(bundle->cmd_data->fd_in,
+		if (temp->type == 12 && !validate_fd(bundle->cmd_data->fd_in,
 				bundle->cmd_data->i, command))
 			return (0);
-		else if (temp->type == FD_OUT && !validate_fd(bundle->cmd_data->fd_out,
+		else if (temp->type == 13 && !validate_fd(bundle->cmd_data->fd_out,
 				bundle->cmd_data->i, command))
 			return (0);
 	}
-	else if (temp->next && temp->type == HEREDOC)
+	else if (temp->next && temp->type == 15)
 	{
 		bundle->cmd_data->fd_in = heredoc(temp->next->content);
-		temp->type = FD_IN;
+		temp->type = 12;
 	}
 	else if (!temp->next)
 	{
@@ -80,7 +80,7 @@ int	handle_redirection(t_token *temp, char **command, t_shell_bundle *bundle)
 		return (0);
 	}
 	if (bundle->cmd_data->fd_in > -1 && bundle->cmd_data->fd_out > -1)
-		bundle->cmd_data->fd_type = BOTH_FD;
+		bundle->cmd_data->fd_type = 9;
 	else
 		bundle->cmd_data->fd_type = temp->type;
 	return (1);

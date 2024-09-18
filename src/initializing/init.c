@@ -44,7 +44,7 @@ void	data_init(t_shell *shell)
 	shell->i = 0;
 	shell->checker = ft_strdup("");
 	shell->tokens = NULL;
-	shell->typeflag = WORD;
+	shell->typeflag = 0;
 	shell->status = 0;
 	shell->myenvstr = env_to_array(shell->enviro);
 }
